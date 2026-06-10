@@ -1,0 +1,6 @@
+{
+  "name": "LifeDrop",
+  "description": "A real-time blood donation management platform connecting hospitals with eligible blood donors instantly during emergencies.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
