@@ -1,7 +1,7 @@
-import express from 'express';
-import path from 'path';
-import fs from 'fs';
-import { createServer as createViteServer } from 'vite';
+import express from "express";
+import path from "path";
+import fs from "fs";
+import { createServer as createViteServer } from "vite";
 
 const app = express();
 const PORT = 3000;
@@ -9,12 +9,12 @@ const PORT = 3000;
 app.use(express.json());
 
 // Ensure directories exist
-const dataDir = path.join(process.cwd(), 'src', 'data');
+const dataDir = path.join(process.cwd(), "backend", "data");
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-const dbPath = path.join(dataDir, 'db.json');
+const dbPath = path.join(dataDir, "db.json");
 
 // Pre-seeded database state
 const defaultState = {
@@ -37,7 +37,7 @@ const defaultState = {
       badges: ["First Donation", "Life Saver", "Hero Donor"],
       isAvailable: true,
       createdAt: new Date("2025-01-20").toISOString(),
-      passwordHash: "donor123" // keeping simple for live preview login
+      passwordHash: "donor123", // keeping simple for live preview login
     },
     {
       id: "u_2",
@@ -57,7 +57,7 @@ const defaultState = {
       badges: [],
       isAvailable: true,
       createdAt: new Date("2026-03-10").toISOString(),
-      passwordHash: "donor123"
+      passwordHash: "donor123",
     },
     {
       id: "u_3",
@@ -77,7 +77,7 @@ const defaultState = {
       badges: ["First Donation", "Life Saver", "Hero Donor"],
       isAvailable: true,
       createdAt: new Date("2023-11-15").toISOString(),
-      passwordHash: "donor123"
+      passwordHash: "donor123",
     },
     {
       id: "u_4",
@@ -97,7 +97,7 @@ const defaultState = {
       badges: ["First Donation"],
       isAvailable: true,
       createdAt: new Date("2026-01-15").toISOString(),
-      passwordHash: "donor123"
+      passwordHash: "donor123",
     },
     {
       id: "u_5",
@@ -117,8 +117,8 @@ const defaultState = {
       badges: ["First Donation"],
       isAvailable: true,
       createdAt: new Date("2025-08-01").toISOString(),
-      passwordHash: "donor123"
-    }
+      passwordHash: "donor123",
+    },
   ],
   hospitals: [
     {
@@ -131,11 +131,17 @@ const defaultState = {
       city: "CHENNAI",
       isApproved: true,
       bloodInventory: {
-        "A+": 12, "A-": 4, "B+": 8, "B-": 2,
-        "AB+": 6, "AB-": 1, "O+": 25, "O-": 3
+        "A+": 12,
+        "A-": 4,
+        "B+": 8,
+        "B-": 2,
+        "AB+": 6,
+        "AB-": 1,
+        "O+": 25,
+        "O-": 3,
       },
       createdAt: new Date("2024-05-15").toISOString(),
-      passwordHash: "hosp123"
+      passwordHash: "hosp123",
     },
     {
       id: "h_2",
@@ -147,11 +153,17 @@ const defaultState = {
       city: "CHENNAI",
       isApproved: true,
       bloodInventory: {
-        "A+": 5, "A-": 1, "B+": 15, "B-": 3,
-        "AB+": 2, "AB-": 0, "O+": 18, "O-": 2
+        "A+": 5,
+        "A-": 1,
+        "B+": 15,
+        "B-": 3,
+        "AB+": 2,
+        "AB-": 0,
+        "O+": 18,
+        "O-": 2,
       },
       createdAt: new Date("2025-02-10").toISOString(),
-      passwordHash: "hosp123"
+      passwordHash: "hosp123",
     },
     {
       id: "h_3",
@@ -163,12 +175,18 @@ const defaultState = {
       city: "MUMBAI",
       isApproved: false, // Pending Admin Approval
       bloodInventory: {
-        "A+": 8, "A-": 2, "B+": 4, "B-": 1,
-        "AB+": 3, "AB-": 1, "O+": 10, "O-": 1
+        "A+": 8,
+        "A-": 2,
+        "B+": 4,
+        "B-": 1,
+        "AB+": 3,
+        "AB-": 1,
+        "O+": 10,
+        "O-": 1,
       },
       createdAt: new Date("2026-05-01").toISOString(),
-      passwordHash: "hosp123"
-    }
+      passwordHash: "hosp123",
+    },
   ],
   bloodRequests: [
     {
@@ -186,7 +204,7 @@ const defaultState = {
       createdAt: new Date("2026-06-09T06:30:00Z").toISOString(),
       acceptedByDonorId: null,
       acceptedByDonorName: null,
-      acceptedByDonorPhone: null
+      acceptedByDonorPhone: null,
     },
     {
       id: "r_2",
@@ -203,8 +221,8 @@ const defaultState = {
       createdAt: new Date("2026-06-08T10:00:00Z").toISOString(),
       acceptedByDonorId: "u_5",
       acceptedByDonorName: "Vijay Kumar",
-      acceptedByDonorPhone: "9876543214"
-    }
+      acceptedByDonorPhone: "9876543214",
+    },
   ],
   donationHistory: [
     {
@@ -216,7 +234,7 @@ const defaultState = {
       bloodGroup: "O+",
       units: 1,
       date: "2026-02-15",
-      status: "completed"
+      status: "completed",
     },
     {
       id: "dh_2",
@@ -227,20 +245,21 @@ const defaultState = {
       bloodGroup: "B+",
       units: 1,
       date: "2026-06-08",
-      status: "completed"
-    }
+      status: "completed",
+    },
   ],
   notifications: [
     {
       id: "n_1",
       userId: "u_1",
       title: "Immediate Emergency Alert!",
-      message: "City General Hospital in CHENNAI requires O+ blood. Your profile is a perfect match!",
+      message:
+        "City General Hospital in CHENNAI requires O+ blood. Your profile is a perfect match!",
       type: "emergency",
       read: false,
       requestId: "r_1",
-      createdAt: new Date("2026-06-09T06:30:00Z").toISOString()
-    }
+      createdAt: new Date("2026-06-09T06:30:00Z").toISOString(),
+    },
   ],
   camps: [
     {
@@ -251,7 +270,7 @@ const defaultState = {
       date: "2026-06-15",
       time: "09:00 AM - 04:00 PM",
       organizer: "City General Hospital & Rotary Club",
-      contact: "9840012345"
+      contact: "9840012345",
     },
     {
       id: "c_2",
@@ -261,7 +280,7 @@ const defaultState = {
       date: "2026-06-14",
       time: "10:00 AM - 07:00 PM",
       organizer: "Bangalore Red Cross Society",
-      contact: "8022131234"
+      contact: "8022131234",
     },
     {
       id: "c_3",
@@ -271,17 +290,17 @@ const defaultState = {
       date: "2026-06-25",
       time: "10:00 AM - 05:00 PM",
       organizer: "Kokilaben Hospital",
-      contact: "2226262626"
-    }
+      contact: "2226262626",
+    },
   ],
   admins: [
     {
       id: "admin_1",
       username: "admin",
       email: "admin@lifedrop.org",
-      passwordHash: "admin123"
-    }
-  ]
+      passwordHash: "admin123",
+    },
+  ],
 };
 
 // Database state in memory
@@ -291,20 +310,21 @@ let state = defaultState;
 const loadState = () => {
   try {
     if (fs.existsSync(dbPath)) {
-      const parsed = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+      const parsed = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
+      // Merge with defaultState to ensure all tables exist
+      state = { ...defaultState, ...parsed };
       // Merge with default admin to ensure login always works
-      if (!parsed.admins || parsed.admins.length === 0) {
-        parsed.admins = defaultState.admins;
+      if (!state.admins || state.admins.length === 0) {
+        state.admins = defaultState.admins;
       }
-      if (!parsed.activityLogs) parsed.activityLogs = [];
-      if (!parsed.emailLogs) parsed.emailLogs = [];
-      if (!parsed.smsLogs) parsed.smsLogs = [];
-      state = parsed;
+      if (!state.activityLogs) state.activityLogs = [];
+      if (!state.emailLogs) state.emailLogs = [];
+      if (!state.smsLogs) state.smsLogs = [];
     } else {
       // Ensure seed state has these tables
-      if (!(state as any).activityLogs) (state as any).activityLogs = [];
-      if (!(state as any).emailLogs) (state as any).emailLogs = [];
-      if (!(state as any).smsLogs) (state as any).smsLogs = [];
+      if (!state.activityLogs) state.activityLogs = [];
+      if (!state.emailLogs) state.emailLogs = [];
+      if (!state.smsLogs) state.smsLogs = [];
       saveState();
     }
   } catch (err) {
@@ -317,10 +337,10 @@ const loadState = () => {
 const saveState = () => {
   try {
     // Ensure lists are defined in state when saving
-    if (!(state as any).activityLogs) (state as any).activityLogs = [];
-    if (!(state as any).emailLogs) (state as any).emailLogs = [];
-    if (!(state as any).smsLogs) (state as any).smsLogs = [];
-    fs.writeFileSync(dbPath, JSON.stringify(state, null, 2), 'utf-8');
+    if (!state.activityLogs) state.activityLogs = [];
+    if (!state.emailLogs) state.emailLogs = [];
+    if (!state.smsLogs) state.smsLogs = [];
+    fs.writeFileSync(dbPath, JSON.stringify(state, null, 2), "utf-8");
   } catch (err) {
     console.error("Failed to save database state to file", err);
   }
@@ -329,41 +349,40 @@ const saveState = () => {
 loadState();
 
 // Core Engines: Loggers and Notifications Simulators
-const logActivity = (userId: string, role: string, action: string, description: string) => {
-  if (!(state as any).activityLogs) (state as any).activityLogs = [];
+const logActivity = (userId, role, action, description) => {
+  if (!state.activityLogs) state.activityLogs = [];
   const newLog = {
     id: `log_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
     userId,
     role,
     action,
     description,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
-  (state as any).activityLogs.unshift(newLog);
+  state.activityLogs.unshift(newLog);
   saveState();
   broadcastToAll("ACTIVITY_LOGGED", newLog);
 };
 
-const sendSimulatedEmail = (toEmail: string, subject: string, body: string) => {
-  if (!(state as any).emailLogs) (state as any).emailLogs = [];
+const sendSimulatedEmail = (toEmail, subject, body) => {
+  if (!state.emailLogs) state.emailLogs = [];
   const newEmail = {
     id: `mail_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
     to: toEmail,
     subject,
     body,
     timestamp: new Date().toISOString(),
-    status: "SENT"
+    status: "SENT",
   };
-  (state as any).emailLogs.unshift(newEmail);
+  state.emailLogs.unshift(newEmail);
   saveState();
   broadcastToAll("EMAIL_SENT", newEmail);
   console.log(`[SIMULATED MAIL] Sent to ${toEmail}: ${subject}`);
 };
 
-const sendSimulatedSMS = (toPhone: string, message: string) => {
-  if (!(state as any).smsLogs) (state as any).smsLogs = [];
-  
-  const cleanPhone = toPhone.replace(/[\s\-()]/g, '');
+const sendSimulatedSMS = (toPhone, message) => {
+  if (!state.smsLogs) state.smsLogs = [];
+  const cleanPhone = toPhone.replace(/[\s\-()]/g, "");
   const indianPhoneRegex = /^(?:\+91|91|0)?[6-9]\d{9}$/;
   let status = "FAILED";
   let error = undefined;
@@ -379,48 +398,84 @@ const sendSimulatedSMS = (toPhone: string, message: string) => {
     body: message,
     timestamp: new Date().toISOString(),
     status,
-    error
+    error,
   };
-  (state as any).smsLogs.unshift(newSms);
+  state.smsLogs.unshift(newSms);
   saveState();
   broadcastToAll("SMS_SENT", newSms);
   console.log(`[SIMULATED SMS] Sent to ${toPhone}: ${message} (${status})`);
 };
 
 // Express SSE connections
-let sseClients: any[] = [];
+let sseClients = [];
 
 // Helper to broadcast live logs / events
-const broadcastToAll = (type: string, data: any) => {
-  sseClients.forEach(client => {
-    client.write(`data: ${JSON.stringify({ type, data })}\n\n`);
+const broadcastToAll = (type, data) => {
+  const activeClients = [];
+  sseClients.forEach((client) => {
+    try {
+      client.write(`data: ${JSON.stringify({ type, data })}\n\n`);
+      activeClients.push(client);
+    } catch (err) {
+      console.warn(
+        `[SSE Broadcast] Failed to write to client ${client.id}, removing.`,
+        err,
+      );
+    }
   });
+  sseClients = activeClients;
 };
 
+// Periodic heartbeat to prevent connection timeouts and prune dead connections
+setInterval(() => {
+  const activeClients = [];
+  sseClients.forEach((client) => {
+    try {
+      client.write(`: heartbeat\n\n`);
+      activeClients.push(client);
+    } catch (err) {
+      console.warn(
+        `[SSE Heartbeat] Failed to ping client ${client.id}, removing.`,
+        err,
+      );
+    }
+  });
+  sseClients = activeClients;
+}, 15000);
+
 // SSE stream endpoint
-app.get('/api/live', (req, res) => {
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
+app.get("/api/live", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
   res.flushHeaders?.();
 
   const clientId = Date.now();
   const newClient = {
     id: clientId,
-    write: (msg: string) => res.write(msg)
+    write: (msg) => res.write(msg),
   };
   sseClients.push(newClient);
 
-  // Send initial connected statement
-  res.write(`data: ${JSON.stringify({ type: 'CONNECTED', data: { status: 'OK', totalClients: sseClients.length } })}\n\n`);
+  try {
+    // Send initial connected statement
+    res.write(
+      `data: ${JSON.stringify({ type: "CONNECTED", data: { status: "OK", totalClients: sseClients.length } })}\n\n`,
+    );
+  } catch (err) {
+    console.error(
+      `[SSE Initial] Failed to write initial payload to client ${clientId}`,
+      err,
+    );
+  }
 
-  req.on('close', () => {
-    sseClients = sseClients.filter(c => c.id !== clientId);
+  req.on("close", () => {
+    sseClients = sseClients.filter((c) => c.id !== clientId);
   });
 });
 
 // Calculate wait days
-function getEligibility(lastDonationStr: string | null) {
+function getEligibility(lastDonationStr) {
   if (!lastDonationStr) return { eligible: true, waitDays: 0 };
   const lastDate = new Date(lastDonationStr);
   const now = new Date("2026-06-09T08:38:59Z"); // using fixed metadata time or current server time
@@ -435,28 +490,29 @@ function getEligibility(lastDonationStr: string | null) {
 
 // Global stats getter
 const getGlobalStats = () => {
-  const livesSaved = state.users.reduce((sum, u) => sum + u.livesSaved, 0) + 120; // adding preseed multiplier
+  const livesSaved =
+    state.users.reduce((sum, u) => sum + u.livesSaved, 0) + 120; // adding preseed multiplier
   return {
     registeredDonors: state.users.length + 24995, // adding initial context metrics
     livesSaved: livesSaved + 8380,
-    partnerHospitals: state.hospitals.filter(h => h.isApproved).length + 118,
-    totalRequests: state.bloodRequests.length + 420
+    partnerHospitals: state.hospitals.filter((h) => h.isApproved).length + 118,
+    totalRequests: state.bloodRequests.length + 420,
   };
 };
 
 /* ================== API ENDPOINTS ================== */
 
 // Get stats
-app.get('/api/stats', (req, res) => {
+app.get("/api/stats", (req, res) => {
   res.json(getGlobalStats());
 });
 
 // Camps
-app.get('/api/camps', (req, res) => {
+app.get("/api/camps", (req, res) => {
   res.json(state.camps);
 });
 
-app.post('/api/camps', (req, res) => {
+app.post("/api/camps", (req, res) => {
   const { title, location, city, date, time, organizer, contact } = req.body;
   if (!title || !location || !city || !date || !time || !organizer) {
     return res.status(400).json({ error: "Missing required fields" });
@@ -469,7 +525,7 @@ app.post('/api/camps', (req, res) => {
     date,
     time,
     organizer,
-    contact: contact || ""
+    contact: contact || "",
   };
   state.camps.push(newCamp);
   saveState();
@@ -478,30 +534,34 @@ app.post('/api/camps', (req, res) => {
 });
 
 // Authentication
-app.post('/api/auth/login', (req, res) => {
+app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: "Please supply email and password" });
   }
 
   // Check Admin first
-  const admin = state.admins.find(a => a.email.toLowerCase() === email.toLowerCase());
+  const admin = state.admins.find(
+    (a) => a.email.toLowerCase() === email.toLowerCase(),
+  );
   if (admin && password === admin.passwordHash) {
     return res.json({
       token: `token_admin_${admin.id}`,
       userType: "admin",
-      account: { id: admin.id, name: admin.username, email: admin.email }
+      account: { id: admin.id, name: admin.username, email: admin.email },
     });
   }
 
   // Check Donor (user)
-  const donor = state.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  const donor = state.users.find(
+    (u) => u.email.toLowerCase() === email.toLowerCase(),
+  );
   if (donor) {
     if (password === donor.passwordHash) {
       return res.json({
         token: `token_donor_${donor.id}`,
         userType: "donor",
-        account: donor
+        account: donor,
       });
     } else {
       return res.status(401).json({ error: "Incorrect password for Donor" });
@@ -509,16 +569,20 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   // Check Hospital
-  const hospital = state.hospitals.find(h => h.email.toLowerCase() === email.toLowerCase());
+  const hospital = state.hospitals.find(
+    (h) => h.email.toLowerCase() === email.toLowerCase(),
+  );
   if (hospital) {
     if (password === hospital.passwordHash) {
       if (!hospital.isApproved) {
-        return res.status(403).json({ error: "Hospital account pending administrator approval." });
+        return res
+          .status(403)
+          .json({ error: "Hospital account pending administrator approval." });
       }
       return res.json({
         token: `token_hospital_${hospital.id}`,
         userType: "hospital",
-        account: hospital
+        account: hospital,
       });
     } else {
       return res.status(401).json({ error: "Incorrect password for Hospital" });
@@ -529,16 +593,42 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // Register Donor
-app.post('/api/auth/register-donor', (req, res) => {
-  const { fullName, age, gender, bloodGroup, phoneNumber, email, password, address, city, state: stateName, lastDonationDate } = req.body;
-  
-  if (!fullName || !age || !gender || !bloodGroup || !phoneNumber || !email || !password || !address || !city || !stateName) {
-    return res.status(400).json({ error: "Please fill out all required fields" });
+app.post("/api/auth/register-donor", (req, res) => {
+  const {
+    fullName,
+    age,
+    gender,
+    bloodGroup,
+    phoneNumber,
+    email,
+    password,
+    address,
+    city,
+    state: stateName,
+    lastDonationDate,
+  } = req.body;
+  if (
+    !fullName ||
+    !age ||
+    !gender ||
+    !bloodGroup ||
+    !phoneNumber ||
+    !email ||
+    !password ||
+    !address ||
+    !city ||
+    !stateName
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Please fill out all required fields" });
   }
 
   // Check duplicates
-  if (state.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-    return res.status(409).json({ error: "Email already registered as a donor" });
+  if (state.users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
+    return res
+      .status(409)
+      .json({ error: "Email already registered as a donor" });
   }
 
   const newDonor = {
@@ -559,35 +649,62 @@ app.post('/api/auth/register-donor', (req, res) => {
     badges: [],
     isAvailable: true,
     createdAt: new Date().toISOString(),
-    passwordHash: password
+    passwordHash: password,
   };
 
   state.users.push(newDonor);
   saveState();
-  
   // High fidelity logging and simulated email
-  logActivity(newDonor.id, 'donor', 'REGISTERED', `${newDonor.fullName} registered as a new Compatible Donor (${newDonor.bloodGroup}) in ${newDonor.city}`);
-  sendSimulatedEmail(newDonor.email, "Welcome to LifeDrop Network!", `Dear ${newDonor.fullName},\n\nThank you for volunteering with LifeDrop. Your profile has been added to our network of active compatible donors in ${newDonor.city}. You will receive immediate alerts whenever there's an emergency blood request matching ${newDonor.bloodGroup} in your area!\n\nRegards,\nLifeDrop Team`);
+  logActivity(
+    newDonor.id,
+    "donor",
+    "REGISTERED",
+    `${newDonor.fullName} registered as a new Compatible Donor (${newDonor.bloodGroup}) in ${newDonor.city}`,
+  );
+  sendSimulatedEmail(
+    newDonor.email,
+    "Welcome to LifeDrop Network!",
+    `Dear ${newDonor.fullName},\n\nThank you for volunteering with LifeDrop. Your profile has been added to our network of active compatible donors in ${newDonor.city}. You will receive immediate alerts whenever there's an emergency blood request matching ${newDonor.bloodGroup} in your area!\n\nRegards,\nLifeDrop Team`,
+  );
 
-  broadcastToAll("DONOR_REGISTERED", { fullName: newDonor.fullName, bloodGroup: newDonor.bloodGroup, city: newDonor.city });
+  broadcastToAll("DONOR_REGISTERED", {
+    fullName: newDonor.fullName,
+    bloodGroup: newDonor.bloodGroup,
+    city: newDonor.city,
+  });
 
   res.status(201).json({
     token: `token_donor_${newDonor.id}`,
     userType: "donor",
-    account: newDonor
+    account: newDonor,
   });
 });
 
 // Register Hospital
-app.post('/api/auth/register-hospital', (req, res) => {
-  const { hospitalName, licenseNumber, email, phone, address, city, password } = req.body;
+app.post("/api/auth/register-hospital", (req, res) => {
+  const { hospitalName, licenseNumber, email, phone, address, city, password } =
+    req.body;
 
-  if (!hospitalName || !licenseNumber || !email || !phone || !address || !city || !password) {
-    return res.status(400).json({ error: "Please fill out all required fields" });
+  if (
+    !hospitalName ||
+    !licenseNumber ||
+    !email ||
+    !phone ||
+    !address ||
+    !city ||
+    !password
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Please fill out all required fields" });
   }
 
-  if (state.hospitals.some(h => h.email.toLowerCase() === email.toLowerCase())) {
-    return res.status(409).json({ error: "Email already registered as a hospital" });
+  if (
+    state.hospitals.some((h) => h.email.toLowerCase() === email.toLowerCase())
+  ) {
+    return res
+      .status(409)
+      .json({ error: "Email already registered as a hospital" });
   }
 
   const newHospital = {
@@ -600,44 +717,67 @@ app.post('/api/auth/register-hospital', (req, res) => {
     city: city.toUpperCase(),
     isApproved: false, // Needs admin approval!
     bloodInventory: {
-      "A+": 0, "A-": 0, "B+": 0, "B-": 0,
-      "AB+": 0, "AB-": 0, "O+": 0, "O-": 0
+      "A+": 0,
+      "A-": 0,
+      "B+": 0,
+      "B-": 0,
+      "AB+": 0,
+      "AB-": 0,
+      "O+": 0,
+      "O-": 0,
     },
     createdAt: new Date().toISOString(),
-    passwordHash: password
+    passwordHash: password,
   };
 
   state.hospitals.push(newHospital);
   saveState();
 
   // High fidelity logging and simulated email
-  logActivity(newHospital.id, 'hospital', 'REGISTERED', `${newHospital.hospitalName} submitted licensing registration request from ${newHospital.city}`);
-  sendSimulatedEmail(newHospital.email, "LifeDrop Registration Verification Required", `Dear ${newHospital.hospitalName} Staff,\n\nWe have successfully received your licensing registration request (License: ${newHospital.licenseNumber}). Our admin board will review details within 24 hours to approve full database and broadcast privileges.\n\nBest Regards,\nLifeDrop Verification Team`);
+  logActivity(
+    newHospital.id,
+    "hospital",
+    "REGISTERED",
+    `${newHospital.hospitalName} submitted licensing registration request from ${newHospital.city}`,
+  );
+  sendSimulatedEmail(
+    newHospital.email,
+    "LifeDrop Registration Verification Required",
+    `Dear ${newHospital.hospitalName} Staff,\n\nWe have successfully received your licensing registration request (License: ${newHospital.licenseNumber}). Our admin board will review details within 24 hours to approve full database and broadcast privileges.\n\nBest Regards,\nLifeDrop Verification Team`,
+  );
 
-  broadcastToAll("HOSPITAL_REGISTERED", { hospitalName: newHospital.hospitalName, city: newHospital.city });
+  broadcastToAll("HOSPITAL_REGISTERED", {
+    hospitalName: newHospital.hospitalName,
+    city: newHospital.city,
+  });
 
   res.status(201).json({
     message: "Hospital account requested. Pending Admin approval.",
-    hospital: newHospital
+    hospital: newHospital,
   });
 });
 
 // Notifications
-app.get('/api/notifications', (req, res) => {
+app.get("/api/notifications", (req, res) => {
   const { userId, hospitalId } = req.query;
-  let list = state.notifications as any[];
+  let list = state.notifications;
   if (userId) {
-    list = list.filter(n => n.userId === userId);
+    list = list.filter((n) => n.userId === userId);
   } else if (hospitalId) {
-    list = list.filter(n => n.hospitalId === hospitalId);
+    list = list.filter((n) => n.hospitalId === hospitalId);
   }
-  res.json(list.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+  res.json(
+    list.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    ),
+  );
 });
 
-app.put('/api/notifications/mark-read', (req, res) => {
+app.put("/api/notifications/mark-read", (req, res) => {
   const { ids } = req.body;
   if (Array.isArray(ids)) {
-    state.notifications = state.notifications.map(n => {
+    state.notifications = state.notifications.map((n) => {
       if (ids.includes(n.id)) return { ...n, read: true };
       return n;
     });
@@ -647,20 +787,20 @@ app.put('/api/notifications/mark-read', (req, res) => {
 });
 
 // Donor Dashboard Endpoints
-app.get('/api/donors/:id', (req, res) => {
-  const donor = state.users.find(u => u.id === req.params.id);
+app.get("/api/donors/:id", (req, res) => {
+  const donor = state.users.find((u) => u.id === req.params.id);
   if (!donor) return res.status(404).json({ error: "Donor not found" });
-  
   const eligibility = getEligibility(donor.lastDonationDate);
   res.json({
     ...donor,
-    eligibility
+    eligibility,
   });
 });
 
-app.put('/api/donors/:id', (req, res) => {
-  const donorIndex = state.users.findIndex(u => u.id === req.params.id);
-  if (donorIndex === -1) return res.status(404).json({ error: "Donor not found" });
+app.put("/api/donors/:id", (req, res) => {
+  const donorIndex = state.users.findIndex((u) => u.id === req.params.id);
+  if (donorIndex === -1)
+    return res.status(404).json({ error: "Donor not found" });
 
   const current = state.users[donorIndex];
   const updated = {
@@ -673,7 +813,10 @@ app.put('/api/donors/:id', (req, res) => {
     address: req.body.address || current.address,
     city: req.body.city ? req.body.city.toUpperCase() : current.city,
     state: req.body.state || current.state,
-    isAvailable: req.body.isAvailable !== undefined ? req.body.isAvailable : current.isAvailable
+    isAvailable:
+      req.body.isAvailable !== undefined
+        ? req.body.isAvailable
+        : current.isAvailable,
   };
 
   state.users[donorIndex] = updated;
@@ -682,30 +825,35 @@ app.put('/api/donors/:id', (req, res) => {
 });
 
 // Donor History
-app.get('/api/donors/:id/history', (req, res) => {
-  const history = state.donationHistory.filter(dh => dh.donorId === req.params.id);
+app.get("/api/donors/:id/history", (req, res) => {
+  const history = state.donationHistory.filter(
+    (dh) => dh.donorId === req.params.id,
+  );
   res.json(history);
 });
 
 // Accept Emergency Alert Action
-app.post('/api/donors/:id/accept/:requestId', (req, res) => {
+app.post("/api/donors/:id/accept/:requestId", (req, res) => {
   const { id, requestId } = req.params;
-  const donor = state.users.find(u => u.id === id);
+  const donor = state.users.find((u) => u.id === id);
   if (!donor) return res.status(404).json({ error: "Donor not found" });
 
-  const request = state.bloodRequests.find(r => r.id === requestId);
-  if (!request) return res.status(404).json({ error: "Emergency request not found" });
+  const request = state.bloodRequests.find((r) => r.id === requestId);
+  if (!request)
+    return res.status(404).json({ error: "Emergency request not found" });
 
-  if (request.status === 'completed') {
-    return res.status(400).json({ error: "This request has already been completed" });
+  if (request.status === "completed") {
+    return res
+      .status(400)
+      .json({ error: "This request has already been completed" });
   }
 
   // Update request counts and flags
   request.unitsMatched += 1;
-  request.status = 'accepted';
+  request.status = "accepted";
   request.acceptedByDonorId = donor.id;
   request.acceptedByDonorName = donor.fullName;
-  (request as any).acceptedByDonorPhone = donor.phoneNumber;
+  request.acceptedByDonorPhone = donor.phoneNumber;
 
   // Add donation history record
   const newDonation = {
@@ -716,8 +864,8 @@ app.post('/api/donors/:id/accept/:requestId', (req, res) => {
     hospitalName: request.hospitalName,
     bloodGroup: request.bloodGroup,
     units: 1,
-    date: new Date().toISOString().split('T')[0],
-    status: "completed" as const
+    date: new Date().toISOString().split("T")[0],
+    status: "completed",
   };
   state.donationHistory.push(newDonation);
 
@@ -725,7 +873,7 @@ app.post('/api/donors/:id/accept/:requestId', (req, res) => {
   donor.totalDonations += 1;
   donor.livesSaved += 3; // 1 unit saves 3 lives generally!
   donor.requestsAccepted += 1;
-  donor.lastDonationDate = new Date().toISOString().split('T')[0];
+  donor.lastDonationDate = new Date().toISOString().split("T")[0];
 
   // Enforce achievements badges
   if (donor.totalDonations >= 1 && !donor.badges.includes("First Donation")) {
@@ -744,48 +892,48 @@ app.post('/api/donors/:id/accept/:requestId', (req, res) => {
     hospitalId: request.hospitalId,
     title: "Donor Matched!",
     message: `${donor.fullName} (${donor.bloodGroup}) has accepted your urgent emergency broadcast request!`,
-    type: "match" as const,
+    type: "match",
     read: false,
     requestId: request.id,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
-  state.notifications.push(notifyHospital as any);
+  state.notifications.push(notifyHospital);
 
   // High fidelity email, SMS notifications and activity logs
   logActivity(
     donor.id,
-    'donor',
-    'REQUEST_ACCEPTED',
-    `${donor.fullName} accepted emergency blood request (Ref: ${request.patientReference}) from ${request.hospitalName}`
+    "donor",
+    "REQUEST_ACCEPTED",
+    `${donor.fullName} accepted emergency blood request (Ref: ${request.patientReference}) from ${request.hospitalName}`,
   );
 
-  if ((donor as any).emailEnabled !== false) {
+  if (donor.emailEnabled !== false) {
     sendSimulatedEmail(
       donor.email,
       "Emergency Broadcast Accepted",
-      `Dear ${donor.fullName},\n\nThank you for accepting the emergency blood donation request from ${request.hospitalName}.\n\nHospital: ${request.hospitalName}\nPatient Ref: ${request.patientReference}\nGroup: ${request.bloodGroup}\n\nPlease proceed to the hospital as soon as possible. Thank you for saving lives!\n\nRegards,\nLifeDrop Emergency Care`
+      `Dear ${donor.fullName},\n\nThank you for accepting the emergency blood donation request from ${request.hospitalName}.\n\nHospital: ${request.hospitalName}\nPatient Ref: ${request.patientReference}\nGroup: ${request.bloodGroup}\n\nPlease proceed to the hospital as soon as possible. Thank you for saving lives!\n\nRegards,\nLifeDrop Emergency Care`,
     );
   }
 
-  const hospital = state.hospitals.find(h => h.id === request.hospitalId);
+  const hospital = state.hospitals.find((h) => h.id === request.hospitalId);
   if (hospital) {
-    if ((hospital as any).emailEnabled !== false) {
+    if (hospital.emailEnabled !== false) {
       sendSimulatedEmail(
         hospital.email,
         `LifeDrop Emergency: Donor Matched!`,
-        `Dear Team,\n\nA volunteer donor has accepted your urgent broadcast request!\n\nDonor Name: ${donor.fullName}\nBlood Group: ${donor.bloodGroup}\nContact Phone: ${donor.phoneNumber}\nPatient Ref: ${request.patientReference}\n\nPlease contact the donor immediately to confirm their arrival time.\n\nWarm Regards,\nLifeDrop Emergency Center`
+        `Dear Team,\n\nA volunteer donor has accepted your urgent broadcast request!\n\nDonor Name: ${donor.fullName}\nBlood Group: ${donor.bloodGroup}\nContact Phone: ${donor.phoneNumber}\nPatient Ref: ${request.patientReference}\n\nPlease contact the donor immediately to confirm their arrival time.\n\nWarm Regards,\nLifeDrop Emergency Center`,
       );
     }
-    if ((hospital as any).smsEnabled !== false) {
+    if (hospital.smsEnabled !== false) {
       sendSimulatedSMS(
         hospital.phone,
-        `LifeDrop Alert: Donor ${donor.fullName} (${donor.bloodGroup}) has accepted your request! Phone: ${donor.phoneNumber}. Please reach out immediately.`
+        `LifeDrop Alert: Donor ${donor.fullName} (${donor.bloodGroup}) has accepted your request! Phone: ${donor.phoneNumber}. Please reach out immediately.`,
       );
     }
   }
 
   // Close connected matching notifications for donor
-  state.notifications = state.notifications.map(n => {
+  state.notifications = state.notifications.map((n) => {
     if (n.userId === donor.id && n.requestId === requestId) {
       return { ...n, read: true };
     }
@@ -795,51 +943,54 @@ app.post('/api/donors/:id/accept/:requestId', (req, res) => {
   saveState();
 
   // Send SSE real-time sync broadcast!
-  broadcastToAll("REQUEST_ACCEPTED", { 
-    requestId: request.id, 
+  broadcastToAll("REQUEST_ACCEPTED", {
+    requestId: request.id,
     hospitalId: request.hospitalId,
-    donorName: donor.fullName, 
-    bloodGroup: request.bloodGroup 
+    donorName: donor.fullName,
+    bloodGroup: request.bloodGroup,
   });
 
   res.json({
-    message: "Success! You have accepted the broadcast alert. Your detail has been shared with the hospital.",
+    message:
+      "Success! You have accepted the broadcast alert. Your detail has been shared with the hospital.",
     request,
-    donor
+    donor,
   });
 });
 
 // Hospital inventory
-app.get('/api/hospitals/:id', (req, res) => {
-  const hospital = state.hospitals.find(h => h.id === req.params.id);
+app.get("/api/hospitals/:id", (req, res) => {
+  const hospital = state.hospitals.find((h) => h.id === req.params.id);
   if (!hospital) return res.status(404).json({ error: "Hospital not found" });
   res.json(hospital);
 });
 
-app.put('/api/hospitals/:id/inventory', (req, res) => {
+app.put("/api/hospitals/:id/inventory", (req, res) => {
   const { inventory } = req.body;
-  const hospIndex = state.hospitals.findIndex(h => h.id === req.params.id);
-  if (hospIndex === -1) return res.status(404).json({ error: "Hospital not found" });
+  const hospIndex = state.hospitals.findIndex((h) => h.id === req.params.id);
+  if (hospIndex === -1)
+    return res.status(404).json({ error: "Hospital not found" });
 
   state.hospitals[hospIndex].bloodInventory = {
     ...state.hospitals[hospIndex].bloodInventory,
-    ...inventory
+    ...inventory,
   };
   saveState();
 
   broadcastToAll("INVENTORY_UPDATED", {
     hospitalId: req.params.id,
     hospitalName: state.hospitals[hospIndex].hospitalName,
-    inventory: state.hospitals[hospIndex].bloodInventory
+    inventory: state.hospitals[hospIndex].bloodInventory,
   });
 
   res.json(state.hospitals[hospIndex]);
 });
 
 // Hospital Create Broadcast Request (Triggers Auto-matching & Sends alerts!)
-app.post('/api/hospitals/:id/requests', (req, res) => {
-  const { bloodGroup, unitsRequired, urgency, patientReference, notes } = req.body;
-  const hospital = state.hospitals.find(h => h.id === req.params.id);
+app.post("/api/hospitals/:id/requests", (req, res) => {
+  const { bloodGroup, unitsRequired, urgency, patientReference, notes } =
+    req.body;
+  const hospital = state.hospitals.find((h) => h.id === req.params.id);
   if (!hospital) return res.status(404).json({ error: "Hospital not found" });
 
   if (!bloodGroup || !unitsRequired || !urgency || !patientReference) {
@@ -857,11 +1008,11 @@ app.post('/api/hospitals/:id/requests', (req, res) => {
     patientReference,
     notes: notes || "",
     city: hospital.city, // Request city binds to hospital location
-    status: "broadcasted" as const,
+    status: "broadcasted",
     createdAt: new Date().toISOString(),
     acceptedByDonorId: null,
     acceptedByDonorName: null,
-    acceptedByDonorPhone: null
+    acceptedByDonorPhone: null,
   };
 
   state.bloodRequests.push(newRequest);
@@ -869,7 +1020,7 @@ app.post('/api/hospitals/:id/requests', (req, res) => {
   // AUTOMATIC MATCHING ALGORITHM:
   // Find eligible, available donors in the same city and match their blood group!
   const targetCity = hospital.city.toUpperCase();
-  const matchedDonors = state.users.filter(user => {
+  const matchedDonors = state.users.filter((user) => {
     // Check city
     if (user.city.toUpperCase() !== targetCity) return false;
     // Check blood group compatibility (or exact match, direct required = user.bloodGroup)
@@ -882,34 +1033,34 @@ app.post('/api/hospitals/:id/requests', (req, res) => {
   });
 
   // Create custom notifications for each matched donor
-  const alerts: any[] = [];
-  matchedDonors.forEach(donor => {
+  const alerts = [];
+  matchedDonors.forEach((donor) => {
     const freshAlert = {
       id: `n_${Date.now()}_${donor.id}`,
       userId: donor.id,
       title: `URGENT: ${urgency} Blood Match!`,
       message: `${hospital.hospitalName} requires ${unitsRequired} units of ${bloodGroup} blood for Patient reference ${patientReference}. Contact: ${hospital.phone}.`,
-      type: "emergency" as const,
+      type: "emergency",
       read: false,
       requestId: newRequest.id,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
     state.notifications.push(freshAlert);
     alerts.push(donor.id);
 
     // Send high-fidelity simulated matching communications
-    if ((donor as any).emailEnabled !== false) {
+    if (donor.emailEnabled !== false) {
       sendSimulatedEmail(
         donor.email,
         `URGENT: LifeDrop Emergency ${bloodGroup} Alert`,
-        `Dear ${donor.fullName},\n\nAn urgent blood requirement has been broadcasted by ${hospital.hospitalName} in ${donor.city}.\n\nThey require ${unitsRequired} units of ${bloodGroup} blood for Patient reference ${patientReference}.\n\nPlease log in to your LifeDrop donor panel to view and accept this request.\n\nRegards,\nLifeDrop India Emergency Network`
+        `Dear ${donor.fullName},\n\nAn urgent blood requirement has been broadcasted by ${hospital.hospitalName} in ${donor.city}.\n\nThey require ${unitsRequired} units of ${bloodGroup} blood for Patient reference ${patientReference}.\n\nPlease log in to your LifeDrop donor panel to view and accept this request.\n\nRegards,\nLifeDrop India Emergency Network`,
       );
     }
 
-    if ((donor as any).smsEnabled !== false) {
+    if (donor.smsEnabled !== false) {
       sendSimulatedSMS(
         donor.phoneNumber,
-        `LifeDrop Alert: ${hospital.hospitalName} urgently requires ${bloodGroup} blood. Patient: ${patientReference}. Please accept from portal!`
+        `LifeDrop Alert: ${hospital.hospitalName} urgently requires ${bloodGroup} blood. Patient: ${patientReference}. Please accept from portal!`,
       );
     }
   });
@@ -917,9 +1068,9 @@ app.post('/api/hospitals/:id/requests', (req, res) => {
   // Log Hospital Action
   logActivity(
     hospital.id,
-    'hospital',
-    'EMERGENCY_BROADCAST',
-    `${hospital.hospitalName} broadcasted an urgent ${urgency} alert for ${unitsRequired} units of ${bloodGroup} (Ref: ${patientReference})`
+    "hospital",
+    "EMERGENCY_BROADCAST",
+    `${hospital.hospitalName} broadcasted an urgent ${urgency} alert for ${unitsRequired} units of ${bloodGroup} (Ref: ${patientReference})`,
   );
 
   saveState();
@@ -928,65 +1079,66 @@ app.post('/api/hospitals/:id/requests', (req, res) => {
   broadcastToAll("EMERGENCY_BROADCAST", {
     request: newRequest,
     targetedDonorIds: alerts,
-    matchCount: matchedDonors.length
+    matchCount: matchedDonors.length,
   });
 
   res.status(201).json({
     message: `Emergency request broadcasted. Found ${matchedDonors.length} matching donors nearby.`,
     request: newRequest,
-    matchedDonorsCount: matchedDonors.length
+    matchedDonorsCount: matchedDonors.length,
   });
 });
 
 // Update Request Status / Complete Request
-app.put('/api/hospitals/:id/requests/:requestId/complete', (req, res) => {
+app.put("/api/hospitals/:id/requests/:requestId/complete", (req, res) => {
   const { id, requestId } = req.params;
-  const request = state.bloodRequests.find(r => r.id === requestId);
+  const request = state.bloodRequests.find((r) => r.id === requestId);
   if (!request) return res.status(404).json({ error: "Request not found" });
 
-  request.status = 'completed';
+  request.status = "completed";
 
   // Automatically increase inventory of that blood group for the hospital by the matched amount
-  const hospital = state.hospitals.find(h => h.id === id);
+  const hospital = state.hospitals.find((h) => h.id === id);
   if (hospital) {
     const completedUnits = request.unitsRequired;
-    hospital.bloodInventory[request.bloodGroup] = (hospital.bloodInventory[request.bloodGroup] || 0) + completedUnits;
+    hospital.bloodInventory[request.bloodGroup] =
+      (hospital.bloodInventory[request.bloodGroup] || 0) + completedUnits;
   }
 
   // Create real-time notification, Email, SMS, and Activity Logger
   logActivity(
     id,
-    'hospital',
-    'REQUEST_COMPLETED',
-    `${hospital ? hospital.hospitalName : 'Hospital'} finalized emergency broadcast for ${request.bloodGroup} (Ref: ${request.patientReference}). Inventory auto-updated.`
+    "hospital",
+    "REQUEST_COMPLETED",
+    `${hospital ? hospital.hospitalName : "Hospital"} finalized emergency broadcast for ${request.bloodGroup} (Ref: ${request.patientReference}). Inventory auto-updated.`,
   );
 
   if (request.acceptedByDonorId) {
-    const donor = state.users.find(u => u.id === request.acceptedByDonorId);
+    const donor = state.users.find((u) => u.id === request.acceptedByDonorId);
     if (donor) {
       const thankYouAlert = {
         id: `n_${Date.now()}_thanks`,
         userId: donor.id,
         title: "Donation Completed & Certified! 🏆",
-        message: `Thank you for donating blood at ${hospital ? hospital.hospitalName : 'Hospital'}. Your life-saving badge and electronic donation certificate is ready!`,
-        type: "system" as const,
+        message: `Thank you for donating blood at ${hospital ? hospital.hospitalName : "Hospital"}. Your life-saving badge and electronic donation certificate is ready!`,
+        type: "system",
         read: false,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      state.notifications.push(thankYouAlert as any);
+      state.notifications.push(thankYouAlert);
 
-      if ((donor as any).emailEnabled !== false) {
+      if (donor.emailEnabled !== false) {
         sendSimulatedEmail(
           donor.email,
           "Thank you for saving lives! Official Donation Certificate",
-          `Dear ${donor.fullName},\n\nOn behalf of the medical staff at ${hospital ? hospital.hospitalName : 'Hospital'} and the LifeDrop Network, we express our profound gratitude for your blood donation.\n\nYour act of kindness helps save up to 3 lives! We have issued an electronic Donation Certificate to your account. You can download and print this certificate anytime through your donor portal.\n\nKeep shining!\n\nRegards,\nLifeDrop Clinical Board`
+          `Dear ${donor.fullName},\n\nOn behalf of the medical staff at ${hospital ? hospital.hospitalName : "Hospital"} and the LifeDrop Network, we express our profound gratitude for your blood donation.\n\nYour act of kindness helps save up to 3 lives! We have issued an electronic Donation Certificate to your account. You can download and print this certificate anytime through your donor portal.\n\nKeep shining!\n\nRegards,\nLifeDrop Clinical Board`,
         );
       }
 
-      if ((donor as any).smsEnabled !== false) {
+      if (donor.smsEnabled !== false) {
         sendSimulatedSMS(
           donor.phoneNumber,
-          `LifeDrop: Thank you for donating! Your official Certificate is now ready. Download it from your dashboard.`
+          `LifeDrop: Thank you for donating! Your official Certificate is now ready. Download it from your dashboard.`,
         );
       }
     }
@@ -994,17 +1146,21 @@ app.put('/api/hospitals/:id/requests/:requestId/complete', (req, res) => {
 
   saveState();
   broadcastToAll("REQUEST_COMPLETED", { requestId, hospitalId: id });
-  res.json({ message: "Request blood fulfilled, inventory successfully auto-updated.", request });
+  res.json({
+    message: "Request blood fulfilled, inventory successfully auto-updated.",
+    request,
+  });
 });
 
 // Admin management
-app.get('/api/admin/overview', (req, res) => {
+app.get("/api/admin/overview", (req, res) => {
   const totalDonors = state.users.length;
   const totalHospitals = state.hospitals.length;
-  const pendingHospitals = state.hospitals.filter(h => !h.isApproved).length;
+  const pendingHospitals = state.hospitals.filter((h) => !h.isApproved).length;
   const totalRequests = state.bloodRequests.length;
-  const completedRequests = state.bloodRequests.filter(r => r.status === 'completed').length;
-  
+  const completedRequests = state.bloodRequests.filter(
+    (r) => r.status === "completed",
+  ).length;
   res.json({
     totalDonors,
     totalHospitals,
@@ -1012,162 +1168,217 @@ app.get('/api/admin/overview', (req, res) => {
     totalRequests,
     completedRequests,
     livesSaved: state.users.reduce((sum, u) => sum + u.livesSaved, 0),
-    globalStats: getGlobalStats()
+    globalStats: getGlobalStats(),
   });
 });
 
-app.get('/api/admin/hospitals', (req, res) => {
+app.get("/api/admin/hospitals", (req, res) => {
   res.json(state.hospitals);
 });
 
-app.get('/api/admin/donors', (req, res) => {
+app.get("/api/admin/donors", (req, res) => {
   res.json(state.users);
 });
 
-app.get('/api/admin/requests', (req, res) => {
+app.get("/api/admin/requests", (req, res) => {
   res.json(state.bloodRequests);
 });
 
-app.put('/api/admin/hospitals/approve/:id', (req, res) => {
-  const hospIndex = state.hospitals.findIndex(h => h.id === req.params.id);
-  if (hospIndex === -1) return res.status(404).json({ error: "Hospital not found" });
+app.put("/api/admin/hospitals/approve/:id", (req, res) => {
+  const hospIndex = state.hospitals.findIndex((h) => h.id === req.params.id);
+  if (hospIndex === -1)
+    return res.status(404).json({ error: "Hospital not found" });
 
   const hospital = state.hospitals[hospIndex];
   hospital.isApproved = true;
   saveState();
 
   // Create systemic notifications, email, and logs
-  logActivity("admin", "admin", "HOSPITAL_APPROVED", `Admin approved registration licensing for ${hospital.hospitalName}.`);
-  
+  logActivity(
+    "admin",
+    "admin",
+    "HOSPITAL_APPROVED",
+    `Admin approved registration licensing for ${hospital.hospitalName}.`,
+  );
   // Notify hospital
   const appNot = {
     id: `n_${Date.now()}_appr`,
     hospitalId: hospital.id,
     title: "Account Approved! 🏥",
-    message: "Your hospital profile has been successfully verified. You have full emergency broadcast permission.",
-    type: "system" as const,
+    message:
+      "Your hospital profile has been successfully verified. You have full emergency broadcast permission.",
+    type: "system",
     read: false,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
-  state.notifications.push(appNot as any);
+  state.notifications.push(appNot);
 
-  if ((hospital as any).emailEnabled !== false) {
+  if (hospital.emailEnabled !== false) {
     sendSimulatedEmail(
       hospital.email,
       "Welcome to LifeDrop Network - Account Approved!",
-      `Dear ${hospital.hospitalName} Administrators,\n\nWe are pleased to inform you that your registration and license verification have been approved by the LifeDrop Administrative Board.\n\nYou now have immediate access to query the donor database, monitor real-time stock levels, and broadcast emergency blood requirements to local compatible pre-screened volunteer donors.\n\nBest Regards,\nLifeDrop India Operations`
+      `Dear ${hospital.hospitalName} Administrators,\n\nWe are pleased to inform you that your registration and license verification have been approved by the LifeDrop Administrative Board.\n\nYou now have immediate access to query the donor database, monitor real-time stock levels, and broadcast emergency blood requirements to local compatible pre-screened volunteer donors.\n\nBest Regards,\nLifeDrop India Operations`,
     );
   }
 
   // Notify via SSE
-  broadcastToAll("HOSPITAL_APPROVED", { hospitalId: req.params.id, name: hospital.hospitalName });
+  broadcastToAll("HOSPITAL_APPROVED", {
+    hospitalId: req.params.id,
+    name: hospital.hospitalName,
+  });
 
-  res.json({ message: "Hospital license verified and registration has been fully approved.", hospital });
+  res.json({
+    message:
+      "Hospital license verified and registration has been fully approved.",
+    hospital,
+  });
 });
 
 // Settings and Preferences update
-app.put('/api/auth/settings', (req, res) => {
+app.put("/api/auth/settings", (req, res) => {
   const { id, userType, theme, emailEnabled, smsEnabled } = req.body;
   if (!id || !userType) {
-    return res.status(400).json({ error: "Missing required parameters (id, userType)" });
+    return res
+      .status(400)
+      .json({ error: "Missing required parameters (id, userType)" });
   }
 
-  if (userType === 'donor') {
-    const idx = state.users.findIndex(u => u.id === id);
+  if (userType === "donor") {
+    const idx = state.users.findIndex((u) => u.id === id);
     if (idx !== -1) {
       state.users[idx] = {
         ...state.users[idx],
-        theme: theme !== undefined ? theme : ((state.users[idx] as any).theme || 'light'),
-        emailEnabled: emailEnabled !== undefined ? emailEnabled : ((state.users[idx] as any).emailEnabled ?? true),
-        smsEnabled: smsEnabled !== undefined ? smsEnabled : ((state.users[idx] as any).smsEnabled ?? true),
-      } as any;
+        theme: theme !== undefined ? theme : state.users[idx].theme || "light",
+        emailEnabled:
+          emailEnabled !== undefined
+            ? emailEnabled
+            : (state.users[idx].emailEnabled ?? true),
+        smsEnabled:
+          smsEnabled !== undefined
+            ? smsEnabled
+            : (state.users[idx].smsEnabled ?? true),
+      };
       saveState();
-      logActivity(id, 'donor', 'SETTINGS_UPDATED', `Updated account preferences (Email: ${emailEnabled}, SMS: ${smsEnabled}, Theme: ${theme})`);
+      logActivity(
+        id,
+        "donor",
+        "SETTINGS_UPDATED",
+        `Updated account preferences (Email: ${emailEnabled}, SMS: ${smsEnabled}, Theme: ${theme})`,
+      );
       return res.json({ success: true, account: state.users[idx] });
     }
-  } else if (userType === 'hospital') {
-    const idx = state.hospitals.findIndex(h => h.id === id);
+  } else if (userType === "hospital") {
+    const idx = state.hospitals.findIndex((h) => h.id === id);
     if (idx !== -1) {
       state.hospitals[idx] = {
         ...state.hospitals[idx],
-        theme: theme !== undefined ? theme : ((state.hospitals[idx] as any).theme || 'light'),
-        emailEnabled: emailEnabled !== undefined ? emailEnabled : ((state.hospitals[idx] as any).emailEnabled ?? true),
-        smsEnabled: smsEnabled !== undefined ? smsEnabled : ((state.hospitals[idx] as any).smsEnabled ?? true),
-      } as any;
+        theme:
+          theme !== undefined ? theme : state.hospitals[idx].theme || "light",
+        emailEnabled:
+          emailEnabled !== undefined
+            ? emailEnabled
+            : (state.hospitals[idx].emailEnabled ?? true),
+        smsEnabled:
+          smsEnabled !== undefined
+            ? smsEnabled
+            : (state.hospitals[idx].smsEnabled ?? true),
+      };
       saveState();
-      logActivity(id, 'hospital', 'SETTINGS_UPDATED', `Updated hospital settings (Email: ${emailEnabled}, SMS: ${smsEnabled}, Theme: ${theme})`);
+      logActivity(
+        id,
+        "hospital",
+        "SETTINGS_UPDATED",
+        `Updated hospital settings (Email: ${emailEnabled}, SMS: ${smsEnabled}, Theme: ${theme})`,
+      );
       return res.json({ success: true, account: state.hospitals[idx] });
     }
   }
-  return res.status(404).json({ error: "Account not found for preference update" });
+  return res
+    .status(404)
+    .json({ error: "Account not found for preference update" });
 });
 
 // Logs fetch endpoints
-app.get('/api/activity-logs', (req, res) => {
+app.get("/api/activity-logs", (req, res) => {
   const { userId, role } = req.query;
-  let list = (state as any).activityLogs || [];
+  let list = state.activityLogs || [];
   if (userId) {
-    list = list.filter((l: any) => l.userId === userId);
+    list = list.filter((l) => l.userId === userId);
   } else if (role) {
-    list = list.filter((l: any) => l.role === role);
+    list = list.filter((l) => l.role === role);
   }
   res.json(list);
 });
 
-app.get('/api/email-sms-logs', (req, res) => {
+app.get("/api/email-sms-logs", (req, res) => {
   res.json({
-    emailLogs: (state as any).emailLogs || [],
-    smsLogs: (state as any).smsLogs || []
+    emailLogs: state.emailLogs || [],
+    smsLogs: state.smsLogs || [],
   });
 });
 
-app.delete('/api/admin/donors/:id', (req, res) => {
-  const donor = state.users.find(u => u.id === req.params.id);
-  state.users = state.users.filter(u => u.id !== req.params.id);
+app.delete("/api/admin/donors/:id", (req, res) => {
+  const donor = state.users.find((u) => u.id === req.params.id);
+  state.users = state.users.filter((u) => u.id !== req.params.id);
   saveState();
-  logActivity("admin", "admin", "DONOR_DELETED", `Admin deleted donor profile: ${donor ? donor.fullName : req.params.id}`);
+  logActivity(
+    "admin",
+    "admin",
+    "DONOR_DELETED",
+    `Admin deleted donor profile: ${donor ? donor.fullName : req.params.id}`,
+  );
   res.json({ success: true, message: "Donor profile deleted." });
 });
 
-app.delete('/api/admin/hospitals/:id', (req, res) => {
-  const hosp = state.hospitals.find(h => h.id === req.params.id);
-  state.hospitals = state.hospitals.filter(h => h.id !== req.params.id);
+app.delete("/api/admin/hospitals/:id", (req, res) => {
+  const hosp = state.hospitals.find((h) => h.id === req.params.id);
+  state.hospitals = state.hospitals.filter((h) => h.id !== req.params.id);
   saveState();
-  logActivity("admin", "admin", "HOSPITAL_DELETED", `Admin deleted hospital profile: ${hosp ? hosp.hospitalName : req.params.id}`);
+  logActivity(
+    "admin",
+    "admin",
+    "HOSPITAL_DELETED",
+    `Admin deleted hospital profile: ${hosp ? hosp.hospitalName : req.params.id}`,
+  );
   res.json({ success: true, message: "Hospital deleted." });
 });
 
 /* ================== API ENDS ================== */
 
 // Serve React Web Assets
-if (process.env.NODE_ENV !== "production") {
-  createViteServer({
-    server: { middlewareMode: true },
-    appType: "spa",
-  }).then(vite => {
+async function startServer() {
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
     app.use(vite.middlewares);
-    
     // Handles catch-all for SPAs in development
-    app.use('*', async (req, res, next) => {
+    app.use("*", async (req, res, next) => {
       try {
         const url = req.originalUrl;
-        const indexHtml = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf-8');
+        const indexHtml = fs.readFileSync(
+          path.resolve(process.cwd(), "frontend", "index.html"),
+          "utf-8",
+        );
         const html = await vite.transformIndexHtml(url, indexHtml);
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+        res.status(200).set({ "Content-Type": "text/html" }).end(html);
       } catch (err) {
         next(err);
       }
     });
-  });
-} else {
-  const distPath = path.join(process.cwd(), 'dist');
-  app.use(express.static(distPath));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+  } else {
+    const distPath = path.join(process.cwd(), "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+  }
+
+  // Start Server
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`[LifeDrop Server] Online on http://0.0.0.0:${PORT}`);
   });
 }
 
-// Start Server
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`[LifeDrop Server] Online on http://0.0.0.0:${PORT}`);
-});
+startServer();

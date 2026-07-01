@@ -1,52 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Activity, Landmark, Bell, X, ShieldAlert, BadgeInfo, Check, Sparkles, AlertCircle, PhoneCall } from 'lucide-react';
-import Navbar from './components/Navbar';
-import LandingPage from './components/LandingPage';
-import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage';
-import DashboardDonor from './components/DashboardDonor';
-import DashboardHospital from './components/DashboardHospital';
-import DashboardAdmin from './components/DashboardAdmin';
-import { GlobalStats, DonationCamp } from './types';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Heart, X } from "lucide-react";
+import Navbar from "./components/Navbar";
+import LandingPage from "./components/LandingPage";
+import LoginPage from "./components/LoginPage";
+import RegisterPage from "./components/RegisterPage";
+import DashboardDonor from "./components/DashboardDonor";
+import DashboardHospital from "./components/DashboardHospital";
+import DashboardAdmin from "./components/DashboardAdmin";
 
 export default function App() {
   // Session States
-  const [currentView, setCurrentView] = useState<string>('home');
-  const [token, setToken] = useState<string | null>(null);
-  const [userType, setUserType] = useState<string | null>(null);
-  const [account, setAccount] = useState<any>(null);
+  const [currentView, setCurrentView] = useState("home");
+  const [token, setToken] = useState(null);
+  const [userType, setUserType] = useState(null);
+  const [account, setAccount] = useState(null);
 
   // Global Data States
-  const [stats, setStats] = useState<GlobalStats>({
+  const [stats, setStats] = useState({
     registeredDonors: 25000,
     livesSaved: 8500,
     partnerHospitals: 120,
-    totalRequests: 430
+    totalRequests: 430,
   });
-  const [camps, setCamps] = useState<DonationCamp[]>([]);
+  const [camps, setCamps] = useState([]);
 
   // Advanced Feature States: Theme & Notifications
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [theme, setTheme] = useState("light");
+  const [notifications, setNotifications] = useState([]);
 
   // SSE and Real-time triggers
-  const [sseStatus, setSseStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
-  const [liveTrigger, setLiveTrigger] = useState<number>(0);
-  
+  const [sseStatus, setSseStatus] = useState("connecting");
+  const [liveTrigger, setLiveTrigger] = useState(0);
   // Floating Live Notification Banners
-  const [livePopup, setLivePopup] = useState<{
-    id: string;
-    title: string;
-    message: string;
-    type: 'emergency' | 'match' | 'system';
-    phone?: string;
-  } | null>(null);
+  const [livePopup, setLivePopup] = useState(null);
 
   // Synchronize HTML element classes for Dark Mode (Disabled: Solid Light Mode)
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('dark');
+    root.classList.remove("dark");
   }, []);
 
   // Fetch notifications globally
@@ -56,10 +48,9 @@ export default function App() {
       return;
     }
     try {
-      let query = '';
-      if (userType === 'donor') query = `?userId=${account.id}`;
-      else if (userType === 'hospital') query = `?hospitalId=${account.id}`;
-      
+      let query = "";
+      if (userType === "donor") query = `?userId=${account.id}`;
+      else if (userType === "hospital") query = `?hospitalId=${account.id}`;
       const res = await fetch(`/api/notifications${query}`);
       if (res.ok) {
         const list = await res.json();
@@ -74,12 +65,12 @@ export default function App() {
     fetchGlobalNotifications();
   }, [token, account, userType, liveTrigger]);
 
-  const handleMarkNotificationsRead = async (ids: string[]) => {
+  const handleMarkNotificationsRead = async (ids) => {
     try {
-      const res = await fetch('/api/notifications/mark-read', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids })
+      const res = await fetch("/api/notifications/mark-read", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
       });
       if (res.ok) {
         fetchGlobalNotifications();
@@ -90,29 +81,29 @@ export default function App() {
     }
   };
 
-  const toggleTheme = async (selectedTheme?: 'light' | 'dark') => {
-    const nextTheme = 'light';
+  const toggleTheme = async (selectedTheme) => {
+    const nextTheme = "light";
     setTheme(nextTheme);
-    localStorage.setItem('ld_theme', nextTheme);
+    localStorage.setItem("ld_theme", nextTheme);
 
     // Sync preference dynamically with user profile in backend database if authenticated
     if (token && account) {
       try {
-        const res = await fetch('/api/auth/settings', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch("/api/auth/settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: account.id,
             userType,
             theme: nextTheme,
             emailEnabled: account.emailEnabled ?? true,
-            smsEnabled: account.smsEnabled ?? true
-          })
+            smsEnabled: account.smsEnabled ?? true,
+          }),
         });
         if (res.ok) {
           const result = await res.json();
           setAccount(result.account);
-          localStorage.setItem('ld_account', JSON.stringify(result.account));
+          localStorage.setItem("ld_account", JSON.stringify(result.account));
         }
       } catch (e) {
         console.warn("Theme offline update fallback active", e);
@@ -122,39 +113,37 @@ export default function App() {
 
   // Read Session initially
   useEffect(() => {
-    const savedToken = localStorage.getItem('ld_token');
-    const savedUserType = localStorage.getItem('ld_userType');
-    const savedAccount = localStorage.getItem('ld_account');
-    const savedView = localStorage.getItem('ld_view');
+    const savedToken = localStorage.getItem("ld_token");
+    const savedUserType = localStorage.getItem("ld_userType");
+    const savedAccount = localStorage.getItem("ld_account");
+    const savedView = localStorage.getItem("ld_view");
 
     if (savedToken && savedUserType && savedAccount) {
       setToken(savedToken);
       setUserType(savedUserType);
       const parsedAccount = JSON.parse(savedAccount);
       setAccount(parsedAccount);
-      
       // Load preference theme saved on profile (Forced light mode)
-      setTheme('light');
-      
+      setTheme("light");
       if (savedView) {
         setCurrentView(savedView);
       } else {
         // Redirection based on roles
-        if (savedUserType === 'donor') setCurrentView('dashboard-donor');
-        else if (savedUserType === 'hospital') setCurrentView('dashboard-hospital');
-        else if (savedUserType === 'admin') setCurrentView('dashboard-admin');
+        if (savedUserType === "donor") setCurrentView("dashboard-donor");
+        else if (savedUserType === "hospital")
+          setCurrentView("dashboard-hospital");
+        else if (savedUserType === "admin") setCurrentView("dashboard-admin");
       }
     }
-    
     fetchGlobalData();
   }, []);
 
   const fetchGlobalData = async () => {
     try {
-      const statsRes = await fetch('/api/stats');
+      const statsRes = await fetch("/api/stats");
       if (statsRes.ok) setStats(await statsRes.json());
 
-      const campsRes = await fetch('/api/camps');
+      const campsRes = await fetch("/api/camps");
       if (campsRes.ok) setCamps(await campsRes.json());
     } catch (e) {
       console.error("Failed to load global landing metadata", e);
@@ -163,15 +152,15 @@ export default function App() {
 
   // Real-Time Server Sent Events Stream Listener
   useEffect(() => {
-    setSseStatus('connecting');
-    const eventSource = new EventSource('/api/live');
+    setSseStatus("connecting");
+    const eventSource = new EventSource("/api/live");
 
     eventSource.onopen = () => {
-      setSseStatus('connected');
+      setSseStatus("connected");
     };
 
     eventSource.onerror = () => {
-      setSseStatus('disconnected');
+      setSseStatus("disconnected");
     };
 
     eventSource.onmessage = (event) => {
@@ -184,13 +173,15 @@ export default function App() {
         fetchGlobalData();
 
         // Check contextual user rules to serve live floating warnings
-        const savedAccountStr = localStorage.getItem('ld_account');
-        const activeAccount = savedAccountStr ? JSON.parse(savedAccountStr) : null;
-        const activeType = localStorage.getItem('ld_userType');
+        const savedAccountStr = localStorage.getItem("ld_account");
+        const activeAccount = savedAccountStr
+          ? JSON.parse(savedAccountStr)
+          : null;
+        const activeType = localStorage.getItem("ld_userType");
 
-        if (type === 'EMERGENCY_BROADCAST') {
+        if (type === "EMERGENCY_BROADCAST") {
           // If current logged-in user is a matching Donor nearby
-          if (activeType === 'donor' && activeAccount) {
+          if (activeType === "donor" && activeAccount) {
             const req = data.request;
             const targetedDonorIds = data.targetedDonorIds || [];
 
@@ -203,29 +194,28 @@ export default function App() {
                 id: `pop_${Date.now()}`,
                 title: `URGENT: Emergency ${req.bloodGroup} Needed!`,
                 message: `${req.hospitalName} requires immediate assistance for Patient reference ${req.patientReference}. Click 'My Portal' to accept!`,
-                type: 'emergency'
+                type: "emergency",
               });
             }
           }
-        } 
-        
-        else if (type === 'REQUEST_ACCEPTED') {
+        } else if (type === "REQUEST_ACCEPTED") {
           // If current logged-in user is the Hospital who created the request
-          if (activeType === 'hospital' && activeAccount && activeAccount.id === data.hospitalId) {
+          if (
+            activeType === "hospital" &&
+            activeAccount &&
+            activeAccount.id === data.hospitalId
+          ) {
             setLivePopup({
               id: `pop_${Date.now()}`,
               title: `Donor Matched!`,
               message: `${data.donorName} (${data.bloodGroup}) has accepted your emergency broadcast! Contacting them immediately.`,
-              type: 'match'
+              type: "match",
             });
           }
-        }
-
-        else if (type === 'HOSPITAL_APPROVED') {
+        } else if (type === "HOSPITAL_APPROVED") {
           // general diagnostic alert
           console.log("[SSE Monitor] Hospital Approved:", data.name);
         }
-
       } catch (err) {
         console.error("Failed to parse incoming SSE message", err);
       }
@@ -236,53 +226,53 @@ export default function App() {
     };
   }, []);
 
-  const handleLoginSuccess = (userToken: string, typeOfUser: string, clientAccount: any) => {
+  const handleLoginSuccess = (userToken, typeOfUser, clientAccount) => {
     setToken(userToken);
     setUserType(typeOfUser);
     setAccount(clientAccount);
 
-    localStorage.setItem('ld_token', userToken);
-    localStorage.setItem('ld_userType', typeOfUser);
-    localStorage.setItem('ld_account', JSON.stringify(clientAccount));
+    localStorage.setItem("ld_token", userToken);
+    localStorage.setItem("ld_userType", typeOfUser);
+    localStorage.setItem("ld_account", JSON.stringify(clientAccount));
 
     // Restore saved user theme settings immediately
     if (clientAccount.theme) {
-      setTheme('light');
-      localStorage.setItem('ld_theme', 'light');
+      setTheme("light");
+      localStorage.setItem("ld_theme", "light");
     }
 
-    let nextView = 'home';
-    if (typeOfUser === 'donor') nextView = 'dashboard-donor';
-    else if (typeOfUser === 'hospital') nextView = 'dashboard-hospital';
-    else if (typeOfUser === 'admin') nextView = 'dashboard-admin';
+    let nextView = "home";
+    if (typeOfUser === "donor") nextView = "dashboard-donor";
+    else if (typeOfUser === "hospital") nextView = "dashboard-hospital";
+    else if (typeOfUser === "admin") nextView = "dashboard-admin";
 
     setCurrentView(nextView);
-    localStorage.setItem('ld_view', nextView);
+    localStorage.setItem("ld_view", nextView);
     fetchGlobalData();
   };
 
-  const handleRegisterDonorSuccess = (userToken: string, donorAccount: any) => {
-    handleLoginSuccess(userToken, 'donor', donorAccount);
+  const handleRegisterDonorSuccess = (userToken, donorAccount) => {
+    handleLoginSuccess(userToken, "donor", donorAccount);
   };
 
   const handleLogout = () => {
     setToken(null);
     setUserType(null);
     setAccount(null);
-    setCurrentView('home');
+    setCurrentView("home");
 
-    localStorage.removeItem('ld_token');
-    localStorage.removeItem('ld_userType');
-    localStorage.removeItem('ld_account');
-    localStorage.removeItem('ld_view');
+    localStorage.removeItem("ld_token");
+    localStorage.removeItem("ld_userType");
+    localStorage.removeItem("ld_account");
+    localStorage.removeItem("ld_view");
   };
 
-  const handleAddCamp = async (newCampData: Omit<DonationCamp, 'id'>) => {
+  const handleAddCamp = async (newCampData) => {
     try {
-      const response = await fetch('/api/camps', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newCampData)
+      const response = await fetch("/api/camps", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newCampData),
       });
       if (response.ok) {
         fetchGlobalData();
@@ -294,14 +284,13 @@ export default function App() {
     return false;
   };
 
-  const setViewWithLocal = (viewName: string) => {
+  const setViewWithLocal = (viewName) => {
     setCurrentView(viewName);
-    localStorage.setItem('ld_view', viewName);
+    localStorage.setItem("ld_view", viewName);
   };
 
   return (
     <div className="bg-[#FAFAFA] dark:bg-[#111827] min-h-screen flex flex-col font-sans antialiased text-gray-900 dark:text-white transition-colors duration-250 selection:bg-red-500 selection:text-white">
-      
       {/* Dynamic Floating Matching Popup alerts */}
       <AnimatePresence>
         {livePopup && (
@@ -313,8 +302,13 @@ export default function App() {
           >
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2 text-red-505">
-                <Heart size={18} className="fill-red-500 text-red-500 animate-pulse animate-duration-1000" />
-                <span className="font-extrabold text-xs tracking-wider text-red-500 uppercase">Emergency Matching Radar</span>
+                <Heart
+                  size={18}
+                  className="fill-red-500 text-red-500 animate-pulse animate-duration-1000"
+                />
+                <span className="font-extrabold text-xs tracking-wider text-red-500 uppercase">
+                  Emergency Matching Radar
+                </span>
               </div>
               <button
                 onClick={() => setLivePopup(null)}
@@ -325,16 +319,21 @@ export default function App() {
             </div>
 
             <div className="space-y-1 text-left">
-              <h4 className="font-black text-sm text-gray-50">{livePopup.title}</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">{livePopup.message}</p>
+              <h4 className="font-black text-sm text-gray-50">
+                {livePopup.title}
+              </h4>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                {livePopup.message}
+              </p>
             </div>
 
             <div className="pt-2 border-t border-white/5 flex gap-2">
               <button
                 onClick={() => {
                   setLivePopup(null);
-                  if (userType === 'donor') setViewWithLocal('dashboard-donor');
-                  else if (userType === 'hospital') setViewWithLocal('dashboard-hospital');
+                  if (userType === "donor") setViewWithLocal("dashboard-donor");
+                  else if (userType === "hospital")
+                    setViewWithLocal("dashboard-hospital");
                 }}
                 className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl text-xs text-center transition active:scale-95"
               >
@@ -366,7 +365,7 @@ export default function App() {
       {/* RENDER VIEWS MANUALLY FOR COMPACTNESS AND RESILIENCY */}
       <main className="flex-grow">
         <AnimatePresence mode="wait">
-          {currentView === 'home' && (
+          {currentView === "home" && (
             <motion.div
               key="home"
               initial={{ opacity: 0 }}
@@ -376,10 +375,11 @@ export default function App() {
               <LandingPage
                 stats={stats}
                 camps={camps}
-                onBecomeDonor={() => setViewWithLocal('register')}
+                onBecomeDonor={() => setViewWithLocal("register")}
                 onHospitalPortal={() => {
-                  if (token && userType === 'hospital') setViewWithLocal('dashboard-hospital');
-                  else setViewWithLocal('login');
+                  if (token && userType === "hospital")
+                    setViewWithLocal("dashboard-hospital");
+                  else setViewWithLocal("login");
                 }}
                 onAddCamp={handleAddCamp}
                 isAuthenticated={token !== null}
@@ -388,7 +388,7 @@ export default function App() {
             </motion.div>
           )}
 
-          {currentView === 'login' && (
+          {currentView === "login" && (
             <motion.div
               key="login"
               initial={{ opacity: 0, y: 10 }}
@@ -397,13 +397,13 @@ export default function App() {
             >
               <LoginPage
                 onLoginSuccess={handleLoginSuccess}
-                onGoToRegister={() => setViewWithLocal('register')}
-                onGoToHome={() => setViewWithLocal('home')}
+                onGoToRegister={() => setViewWithLocal("register")}
+                onGoToHome={() => setViewWithLocal("home")}
               />
             </motion.div>
           )}
 
-          {currentView === 'register' && (
+          {currentView === "register" && (
             <motion.div
               key="register"
               initial={{ opacity: 0, y: 10 }}
@@ -416,47 +416,52 @@ export default function App() {
                   setLivePopup({
                     id: `reg_${Date.now()}`,
                     title: "Application Received!",
-                    message: "Hospital account requested. License registration submitted and pending verify.",
-                    type: "system"
+                    message:
+                      "Hospital account requested. License registration submitted and pending verify.",
+                    type: "system",
                   });
                 }}
-                onGoToLogin={() => setViewWithLocal('login')}
-                onGoToHome={() => setViewWithLocal('home')}
+                onGoToLogin={() => setViewWithLocal("login")}
+                onGoToHome={() => setViewWithLocal("home")}
               />
             </motion.div>
           )}
 
-          {currentView === 'dashboard-donor' && token && donorIdFromToken(token) && (
-            <motion.div
-              key="dashboard-donor"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <DashboardDonor
-                donorId={donorIdFromToken(token)}
-                onLogout={handleLogout}
-                liveTrigger={liveTrigger}
-              />
-            </motion.div>
-          )}
+          {currentView === "dashboard-donor" &&
+            token &&
+            donorIdFromToken(token) && (
+              <motion.div
+                key="dashboard-donor"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <DashboardDonor
+                  donorId={donorIdFromToken(token)}
+                  onLogout={handleLogout}
+                  liveTrigger={liveTrigger}
+                />
+              </motion.div>
+            )}
 
-          {currentView === 'dashboard-hospital' && token && hospitalIdFromToken(token) && (
-            <motion.div
-              key="dashboard-hospital"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <DashboardHospital
-                hospitalId={hospitalIdFromToken(token)}
-                onLogout={handleLogout}
-                liveTrigger={liveTrigger}
-              />
-            </motion.div>
-          )}
+          {currentView === "dashboard-hospital" &&
+            token &&
+            hospitalIdFromToken(token) && (
+              <motion.div
+                key="dashboard-hospital"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <DashboardHospital
+                  hospitalId={hospitalIdFromToken(token)}
+                  onLogout={handleLogout}
+                  liveTrigger={liveTrigger}
+                />
+              </motion.div>
+            )}
 
-          {currentView === 'dashboard-admin' && token && (
+          {currentView === "dashboard-admin" && token && (
             <motion.div
               key="dashboard-admin"
               initial={{ opacity: 0 }}
@@ -479,14 +484,21 @@ export default function App() {
               <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center">
                 <Heart size={16} className="text-white fill-white" />
               </div>
-              <span className="font-extrabold text-lg text-white">LifeDrop</span>
+              <span className="font-extrabold text-lg text-white">
+                LifeDrop
+              </span>
             </div>
             <p className="leading-relaxed text-xs">
-              A premium, full-scale, real-time blood transfusion management network bridging accredited partner hospitals with healthy compatible volunteer blood donors nearby during critical healthcare emergencies.
+              A premium, full-scale, real-time blood transfusion management
+              network bridging accredited partner hospitals with healthy
+              compatible volunteer blood donors nearby during critical
+              healthcare emergencies.
             </p>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider">Clinical Partners</h4>
+            <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider">
+              Clinical Partners
+            </h4>
             <ul className="space-y-2 text-xs">
               <li>City General Hospital, T Nagar</li>
               <li>Metro Health Care Center, Adyar</li>
@@ -495,39 +507,45 @@ export default function App() {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider font-mono">Real-Time Core</h4>
+            <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider font-mono">
+              Real-Time Core
+            </h4>
             <div className="flex items-center gap-2 mb-2 p-2.5 rounded-xl border border-white/5 bg-white/2 bg-slate-950">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <p className="text-[11px] font-mono leading-none">STREAM STATUS: ACTIVE (PORT: 3000)</p>
+              <p className="text-[11px] font-mono leading-none">
+                STREAM STATUS: ACTIVE (PORT: 3000)
+              </p>
             </div>
             <p className="text-[11px] leading-relaxed">
-              Every broadcast emergency automatically maps location, constraints, availability, and eligibility periods under verified administrative guidelines.
+              Every broadcast emergency automatically maps location,
+              constraints, availability, and eligibility periods under verified
+              administrative guidelines.
             </p>
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 text-center text-xs text-gray-500">
-          LifeDrop Platform • Designed for secure, zero-friction medical coordination. All rights reserved © 2026.
+          LifeDrop Platform • Designed for secure, zero-friction medical
+          coordination. All rights reserved © 2026.
         </div>
       </footer>
-
     </div>
   );
 }
 
 // Token parser parsers
-function donorIdFromToken(t: string): string {
-  if (t.startsWith('token_donor_')) {
-    return t.replace('token_donor_', '');
+function donorIdFromToken(t) {
+  if (t.startsWith("token_donor_")) {
+    return t.replace("token_donor_", "");
   }
-  return '';
+  return "";
 }
 
-function hospitalIdFromToken(t: string): string {
-  if (t.startsWith('token_hospital_')) {
-    return t.replace('token_hospital_', '');
+function hospitalIdFromToken(t) {
+  if (t.startsWith("token_hospital_")) {
+    return t.replace("token_hospital_", "");
   }
-  return '';
+  return "";
 }
