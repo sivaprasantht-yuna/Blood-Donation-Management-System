@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(express.json());
 
 // Ensure directories exist
-const dataDir = path.join(process.cwd(), "backend", "data");
+const dataDir = path.join(process.cwd(), "src", "data");
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
@@ -1358,7 +1358,7 @@ async function startServer() {
       try {
         const url = req.originalUrl;
         const indexHtml = fs.readFileSync(
-          path.resolve(process.cwd(), "frontend", "index.html"),
+          path.resolve(process.cwd(), "index.html"),
           "utf-8",
         );
         const html = await vite.transformIndexHtml(url, indexHtml);

@@ -4,8 +4,8 @@ import { Award, Download, X } from "lucide-react";
 export default function CertificateModal({
   isOpen,
   onClose,
-  donorName = "Valued Donor",
-  bloodGroup = "N/A",
+  donorName,
+  bloodGroup,
 }) {
   const canvasRef = useRef(null);
   const [downloadUrl, setDownloadUrl] = useState("");
@@ -24,10 +24,7 @@ export default function CertificateModal({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
-      const activeDonorName = (donorName || "Valued Donor").toUpperCase();
-      const activeBloodGroup = bloodGroup || "N/A";
-
-      const drawCertificate = () => {
+      document.fonts.ready.then(() => {
         const width = 3508;
         const height = 2480;
 
@@ -271,7 +268,7 @@ export default function CertificateModal({
         // Recipient Name
         ctx.font = '700 92px "Playfair Display", serif';
         ctx.fillStyle = "#C1121F";
-        ctx.fillText(activeDonorName, logoX, logoY + 670);
+        ctx.fillText(donorName.toUpperCase(), logoX, logoY + 670);
 
         // Underline name (Elegant Gold Line with central decorative diamond)
         ctx.strokeStyle = "#D4AF37";
@@ -329,7 +326,7 @@ export default function CertificateModal({
         ctx.strokeRect(cardX, cardY, cardW, cardH);
 
         let items = [
-          { label: "Blood Group", val: activeBloodGroup },
+          { label: "Blood Group", val: bloodGroup },
           {
             label: "Donation ID",
             val: `DN-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -392,7 +389,7 @@ export default function CertificateModal({
 
         ctx.fillStyle = "#333333";
         for (let r = 0; r < 14; r++) {
-          for (let c = 0; c < 14; c++) {
+          for (let c = 0; r + c > 2; c++) {
             if ((r < 5 && c < 5) || (r < 5 && c > 8) || (r > 8 && c < 5))
               continue;
             let rand = Math.sin(r * 12.9898 + c * 78.233) * 43758.5453;
@@ -505,21 +502,7 @@ export default function CertificateModal({
         // Update Download URL
         const url = canvas.toDataURL("image/png");
         setDownloadUrl(url);
-      };
-
-      // Draw immediately
-      drawCertificate();
-
-      // Draw again when fonts are ready for perfect styling
-      if (document.fonts && typeof document.fonts.ready !== "undefined") {
-        document.fonts.ready
-          .then(() => {
-            drawCertificate();
-          })
-          .catch((e) => {
-            console.warn("Fonts loading deferred, using default metrics", e);
-          });
-      }
+      });
     }, 150);
   }, [isOpen, donorName, bloodGroup, serialNo]);
 
@@ -558,7 +541,7 @@ export default function CertificateModal({
         <div className="flex flex-col sm:flex-row gap-3 w-full">
           <a
             href={downloadUrl}
-            download={`LifeSaver_Certificate_${(donorName || "Valued_Donor").replace(/\s+/g, "_")}.png`}
+            download={`LifeSaver_Certificate_${donorName.replace(/\s+/g, "_")}.png`}
             className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-2xl active:scale-[98%] transition shadow-lg shadow-red-200"
           >
             <Download size={18} /> Download High-Resolution Award
