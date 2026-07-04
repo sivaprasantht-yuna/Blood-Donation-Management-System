@@ -389,7 +389,7 @@ export default function CertificateModal({
 
         ctx.fillStyle = "#333333";
         for (let r = 0; r < 14; r++) {
-          for (let c = 0; r + c > 2; c++) {
+          for (let c = 0; c < 14; c++) {
             if ((r < 5 && c < 5) || (r < 5 && c > 8) || (r > 8 && c < 5))
               continue;
             let rand = Math.sin(r * 12.9898 + c * 78.233) * 43758.5453;

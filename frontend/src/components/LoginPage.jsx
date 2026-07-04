@@ -49,10 +49,25 @@ export default function LoginPage({
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const text = await response.text();
+      let data = null;
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch (parseError) {
+          throw new Error(
+            `Invalid server response: ${response.status} ${response.statusText}`,
+          );
+        }
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || "Authentication failed. Try again.");
+        const errorMessage = data?.error || response.statusText || "Authentication failed. Try again.";
+        throw new Error(errorMessage);
+      }
+
+      if (!data || !data.token) {
+        throw new Error("Unexpected login response from server.");
       }
 
       onLoginSuccess(data.token, data.userType, data.account);
