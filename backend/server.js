@@ -2,6 +2,17 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import { createServer as createViteServer } from "vite";
+import dotenv from "dotenv";
+
+// Load .env from root or local directory
+const rootEnvPath = path.join(process.cwd(), "..", ".env");
+const localEnvPath = path.join(process.cwd(), ".env");
+if (fs.existsSync(rootEnvPath)) {
+  dotenv.config({ path: rootEnvPath });
+} else {
+  dotenv.config({ path: localEnvPath });
+}
+
 
 const app = express();
 const DEFAULT_PORT = 3000;
@@ -743,6 +754,13 @@ app.put("/api/auth/settings", (req, res) => {
     if (idx !== -1) {
       state.users[idx] = { ...state.users[idx], theme, emailEnabled, smsEnabled };
       account = state.users[idx];
+      saveState();
+    }
+  } else if (userType === "hospital") {
+    const idx = state.hospitals.findIndex((h) => h.id === id);
+    if (idx !== -1) {
+      state.hospitals[idx] = { ...state.hospitals[idx], theme, emailEnabled, smsEnabled };
+      account = state.hospitals[idx];
       saveState();
     }
   }

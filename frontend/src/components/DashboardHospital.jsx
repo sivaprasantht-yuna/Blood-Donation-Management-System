@@ -28,6 +28,7 @@ export default function DashboardHospital({
   hospitalId,
   onLogout,
   liveTrigger,
+  theme,
 }) {
   const [profile, setProfile] = useState(null);
   const [requests, setRequests] = useState([]);
@@ -230,7 +231,7 @@ export default function DashboardHospital({
         body: JSON.stringify({
           id: hospitalId,
           userType: "hospital",
-          theme: profile?.theme || "light",
+          theme: theme || "light",
           emailEnabled: preferences.emailEnabled,
           smsEnabled: preferences.smsEnabled,
         }),
@@ -430,8 +431,19 @@ export default function DashboardHospital({
         {activeTab === "operations" && (
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* ANALYTICS MODULES COUNTERS */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-4 gap-6"
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+              }}
+            >
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 350, damping: 22 } } }}
+                className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors"
+              >
                 <span className="text-xs font-bold text-gray-400 dark:text-gray-300 uppercase tracking-widest">
                   Total Stock
                 </span>
@@ -446,9 +458,12 @@ export default function DashboardHospital({
                 <p className="text-[11px] text-gray-400 dark:text-gray-300 font-semibold">
                   Allocated across categories.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 350, damping: 22 } } }}
+                className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors"
+              >
                 <span className="text-xs font-bold text-[#DC2626] uppercase tracking-widest">
                   Broadcasting Alert
                 </span>
@@ -463,9 +478,12 @@ export default function DashboardHospital({
                 <p className="text-[11px] text-gray-400 dark:text-gray-300 font-semibold">
                   Scanning local donors.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 350, damping: 22 } } }}
+                className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors"
+              >
                 <span className="text-xs font-bold text-emerald-500 uppercase tracking-widest">
                   Completed Drives
                 </span>
@@ -480,9 +498,12 @@ export default function DashboardHospital({
                 <p className="text-[11px] text-gray-400 dark:text-gray-300 font-semibold">
                   Fulfillment completed.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20, scale: 0.97 }, show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 350, damping: 22 } } }}
+                className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors"
+              >
                 <span className="text-xs font-bold text-blue-500 uppercase tracking-widest text-[10px]">
                   Multiplier Estimate
                 </span>
@@ -497,8 +518,8 @@ export default function DashboardHospital({
                 <p className="text-[11px] text-gray-400 dark:text-gray-300 font-semibold">
                   1 blood unit saves 3 patients.
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* BLOOD TYPE STOCK INVENTORY MANAGER */}
             <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-xl space-y-4 transition-colors">
@@ -512,12 +533,21 @@ export default function DashboardHospital({
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+              <motion.div
+                className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4"
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
+                }}
+              >
                 {BLOOD_GROUPS.map((group) => {
                   const count = profile.bloodInventory[group] || 0;
                   return (
-                    <div
+                    <motion.div
                       key={group}
+                      variants={{ hidden: { opacity: 0, scale: 0.85, y: 15 }, show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 400, damping: 20 } } }}
                       className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 p-4 shrink-0 hover:border-red-100 dark:hover:border-red-950 hover:bg-white dark:hover:bg-gray-800 transition-all duration-300 flex flex-col justify-between text-center min-h-[140px]"
                     >
                       <span className="font-extrabold text-sm text-red-600 dark:text-red-400 font-mono">
@@ -534,25 +564,27 @@ export default function DashboardHospital({
                       </div>
 
                       <div className="flex gap-1.5 justify-center">
-                        <button
+                        <motion.button
+                          whileTap={{ scale: 0.8 }}
                           onClick={() => handleUpdateStock(group, "subtract")}
                           disabled={count === 0 || updatingInventory !== null}
                           className="p-1 px-2.5 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-white transition font-bold disabled:opacity-40 cursor-pointer"
                         >
                           <Minus size={11} />
-                        </button>
-                        <button
+                        </motion.button>
+                        <motion.button
+                          whileTap={{ scale: 0.8 }}
                           onClick={() => handleUpdateStock(group, "add")}
                           disabled={updatingInventory !== null}
                           className="p-1 px-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white transition font-bold cursor-pointer"
                         >
                           <Plus size={11} />
-                        </button>
+                        </motion.button>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
             </div>
 
             {/* BROADCAST FORM & NOTIFICATION INBOX */}

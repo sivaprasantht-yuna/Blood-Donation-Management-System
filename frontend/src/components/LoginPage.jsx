@@ -81,10 +81,10 @@ export default function LoginPage({
   return (
     <div className="min-h-[calc(100vh-4rem)] flex bg-[#FAFAFA] dark:bg-[#111827] text-gray-900 dark:text-white transition-colors duration-250">
       {/* Split-Screen - Left panel (Atmospheric Graphic, hidden on small) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 p-12 flex-col justify-between relative overflow-hidden text-white pattern-dots">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-red-50/60 via-slate-50 to-white dark:from-[#0b1329] dark:via-[#111827] dark:to-[#0b1329] p-12 flex-col justify-between relative overflow-hidden text-gray-900 dark:text-white border-r border-gray-150 dark:border-white/5 transition-colors duration-250">
         {/* Animated ambient overlay */}
-        <div className="absolute w-80 h-80 rounded-full bg-red-600/20 blur-3xl -top-20 -left-20" />
-        <div className="absolute w-80 h-80 rounded-full bg-red-400/10 blur-3xl -bottom-20 -right-20" />
+        <div className="absolute w-80 h-80 rounded-full bg-red-600/10 dark:bg-red-600/20 blur-3xl -top-20 -left-20" />
+        <div className="absolute w-80 h-80 rounded-full bg-red-400/5 dark:bg-red-400/10 blur-3xl -bottom-20 -right-20" />
 
         {/* Top brand header */}
         <div
@@ -94,38 +94,38 @@ export default function LoginPage({
           <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/10">
             <Heart size={20} className="fill-white text-white" />
           </div>
-          <span className="font-extrabold text-xl tracking-tight">
+          <span className="font-extrabold text-xl tracking-tight text-gray-900 dark:text-white">
             LifeDrop
           </span>
         </div>
 
         {/* Floating Content Card */}
         <div className="z-10 max-w-md space-y-6 self-center my-auto text-left">
-          <span className="text-xs font-semibold px-3 py-1 bg-white/5 border border-white/10 text-red-400 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wide">
+          <span className="text-xs font-semibold px-3 py-1 bg-red-50 dark:bg-white/5 border border-red-100 dark:border-white/10 text-red-600 dark:text-red-400 rounded-full inline-flex items-center gap-1.5 uppercase tracking-wide">
             <Activity size={12} className="animate-pulse" /> Verified Network
           </span>
-          <h2 className="text-4xl font-extrabold tracking-tight leading-tight">
+          <h2 className="text-4xl font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
             Connect Instantly.
             <br />
             Save Immediately.
           </h2>
-          <p className="text-gray-400 text-sm leading-relaxed">
+          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed font-medium">
             Logging in grants secure workspace access. Hospitals coordinate
             emergencies, while our donors retrieve certified active alerts on
             local demands instantly.
           </p>
 
           {/* Quick Stats Panel inside left screen */}
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-150 dark:border-white/5">
             <div>
-              <p className="text-2xl font-bold text-white">25k+</p>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">25k+</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">
                 Active Donors
               </p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">Chennai</p>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">Chennai</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">
                 Central hub
               </p>
             </div>
@@ -133,7 +133,7 @@ export default function LoginPage({
         </div>
 
         {/* Bottom micro branding details */}
-        <div className="z-10 text-xs text-gray-500 font-medium animate-pulse">
+        <div className="z-10 text-xs text-gray-400 dark:text-gray-500 font-medium">
           Licensed medical security authentication. © 2026 LifeDrop.
         </div>
       </div>

@@ -35,11 +35,17 @@ export default function App() {
   // Floating Live Notification Banners
   const [livePopup, setLivePopup] = useState(null);
 
-  // Synchronize HTML element classes for Dark Mode (Disabled: Solid Light Mode)
+  // Synchronize HTML element classes for Dark Mode
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("dark");
-  }, []);
+    if (theme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+    } else {
+      root.classList.remove("dark");
+      root.classList.add("light");
+    }
+  }, [theme]);
 
   // Fetch notifications globally
   const fetchGlobalNotifications = async () => {
@@ -81,8 +87,8 @@ export default function App() {
     }
   };
 
-  const toggleTheme = async (selectedTheme) => {
-    const nextTheme = "light";
+  const toggleTheme = async () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
     localStorage.setItem("ld_theme", nextTheme);
 
@@ -117,14 +123,23 @@ export default function App() {
     const savedUserType = localStorage.getItem("ld_userType");
     const savedAccount = localStorage.getItem("ld_account");
     const savedView = localStorage.getItem("ld_view");
+    const savedTheme = localStorage.getItem("ld_theme");
+
+    // Restore saved theme preference
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setTheme(savedTheme);
+    }
 
     if (savedToken && savedUserType && savedAccount) {
       setToken(savedToken);
       setUserType(savedUserType);
       const parsedAccount = JSON.parse(savedAccount);
       setAccount(parsedAccount);
-      // Load preference theme saved on profile (Forced light mode)
-      setTheme("light");
+      // Load preference theme saved on profile
+      if (parsedAccount.theme === "dark" || parsedAccount.theme === "light") {
+        setTheme(parsedAccount.theme);
+        localStorage.setItem("ld_theme", parsedAccount.theme);
+      }
       if (savedView) {
         setCurrentView(savedView);
       } else {
@@ -236,9 +251,9 @@ export default function App() {
     localStorage.setItem("ld_account", JSON.stringify(clientAccount));
 
     // Restore saved user theme settings immediately
-    if (clientAccount.theme) {
-      setTheme("light");
-      localStorage.setItem("ld_theme", "light");
+    if (clientAccount.theme === "dark" || clientAccount.theme === "light") {
+      setTheme(clientAccount.theme);
+      localStorage.setItem("ld_theme", clientAccount.theme);
     }
 
     let nextView = "home";
@@ -360,6 +375,8 @@ export default function App() {
         sseStatus={sseStatus}
         notifications={notifications}
         onMarkNotificationsRead={handleMarkNotificationsRead}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       {/* RENDER VIEWS MANUALLY FOR COMPACTNESS AND RESILIENCY */}
@@ -440,6 +457,7 @@ export default function App() {
                   donorId={donorIdFromToken(token)}
                   onLogout={handleLogout}
                   liveTrigger={liveTrigger}
+                  theme={theme}
                 />
               </motion.div>
             )}
@@ -457,6 +475,7 @@ export default function App() {
                   hospitalId={hospitalIdFromToken(token)}
                   onLogout={handleLogout}
                   liveTrigger={liveTrigger}
+                  theme={theme}
                 />
               </motion.div>
             )}
@@ -477,14 +496,14 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      <footer className="bg-slate-900 text-white border-t border-white/5 py-10 px-4">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-left text-sm text-gray-400">
+      <footer className="bg-white dark:bg-slate-950 text-gray-500 dark:text-gray-400 border-t border-gray-150 dark:border-white/5 py-10 px-4 transition-colors duration-250">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-left text-sm">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center">
                 <Heart size={16} className="text-white fill-white" />
               </div>
-              <span className="font-extrabold text-lg text-white">
+              <span className="font-extrabold text-lg text-gray-900 dark:text-white">
                 LifeDrop
               </span>
             </div>
@@ -496,7 +515,7 @@ export default function App() {
             </p>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider">
+            <h4 className="font-bold text-gray-900 dark:text-white mb-4 uppercase text-xs tracking-wider">
               Clinical Partners
             </h4>
             <ul className="space-y-2 text-xs">
@@ -507,10 +526,10 @@ export default function App() {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider font-mono">
+            <h4 className="font-bold text-gray-900 dark:text-white mb-4 uppercase text-xs tracking-wider font-mono">
               Real-Time Core
             </h4>
-            <div className="flex items-center gap-2 mb-2 p-2.5 rounded-xl border border-white/5 bg-white/2 bg-slate-950">
+            <div className="flex items-center gap-2 mb-2 p-2.5 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-200 transition-colors duration-250">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -526,7 +545,7 @@ export default function App() {
             </p>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-white/5 text-center text-xs text-gray-500">
+        <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-150 dark:border-white/5 text-center text-xs text-gray-400 dark:text-gray-500">
           LifeDrop Platform • Designed for secure, zero-friction medical
           coordination. All rights reserved © 2026.
         </div>

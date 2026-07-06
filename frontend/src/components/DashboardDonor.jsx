@@ -11,10 +11,32 @@ import {
   Mail,
   MessageSquare,
   Settings,
+  ExternalLink,
 } from "lucide-react";
 import CertificateModal from "./CertificateModal";
+import MockPhoneFrame from "./MockPhoneFrame";
+import MockEmailFrame from "./MockEmailFrame";
 
-export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
+// Stagger animations for stat cards
+const statContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+};
+
+const statCardVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.97 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring", stiffness: 350, damping: 22 },
+  },
+};
+
+export default function DashboardDonor({ donorId, onLogout, liveTrigger, theme }) {
   const [profile, setProfile] = useState(null);
   const [history, setHistory] = useState([]);
   const [alerts, setAlerts] = useState([]);
@@ -34,6 +56,8 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
   // Modal toggle
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [selectedSms, setSelectedSms] = useState(null);
 
   const fetchDonorData = async () => {
     try {
@@ -167,7 +191,7 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
         body: JSON.stringify({
           id: donorId,
           userType: "donor",
-          theme: profile?.theme || "light",
+          theme: theme || "light",
           emailEnabled: preferences.emailEnabled,
           smsEnabled: preferences.smsEnabled,
         }),
@@ -348,8 +372,13 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
         {activeTab === "hub" && (
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* STATS BENTO MATRIX */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-4 gap-6"
+              variants={statContainerVariants}
+              initial="hidden"
+              animate="show"
+            >
+              <motion.div variants={statCardVariants} className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
                 <span className="text-[10px] font-bold text-gray-400 dark:text-gray-300 uppercase tracking-widest">
                   Total Drive Donations
                 </span>
@@ -364,9 +393,9 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                 <p className="text-[10px] text-gray-400 dark:text-gray-300 leading-normal">
                   Registered and certified in hospital portal.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+              <motion.div variants={statCardVariants} className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
                 <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">
                   Lives Saved Scorecard
                 </span>
@@ -381,10 +410,10 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                 <p className="text-[10px] text-gray-400 dark:text-gray-300 leading-normal">
                   Each donation assists 3 critical patients.
                 </p>
-              </div>
+              </motion.div>
 
               {/* Eligibility card */}
-              <div className="bg-white dark:bg-[#1F2937] p-6 rounded-3xl border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+              <motion.div variants={statCardVariants} className="bg-white dark:bg-[#1F2937] p-6 rounded-3xl border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
                 <span
                   className={`text-[10px] font-bold uppercase tracking-widest ${isEligible ? "text-red-500" : "text-amber-500"}`}
                 >
@@ -396,9 +425,13 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                       <p className="text-2xl font-black text-gray-900 dark:text-white">
                         Eligible & Active
                       </p>
-                      <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
+                      <motion.p
+                        animate={{ opacity: [0.6, 1, 0.6] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-1"
+                      >
                         90 Day Intervallic Safety Clear
-                      </p>
+                      </motion.p>
                     </div>
                   ) : (
                     <div>
@@ -414,10 +447,10 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                 <p className="text-[10px] text-gray-400 dark:text-gray-300">
                   Mandatory clinical interval.
                 </p>
-              </div>
+              </motion.div>
 
               {/* Badge Milestone achievements */}
-              <div className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
+              <motion.div variants={statCardVariants} className="bg-white dark:bg-[#1F2937] rounded-3xl p-6 border border-gray-150 dark:border-gray-800 shadow-md flex flex-col justify-between transition-colors">
                 <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">
                   Accredited Badges
                 </span>
@@ -425,12 +458,15 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                   {profile.badges && profile.badges.length > 0 ? (
                     <div className="flex flex-wrap gap-1">
                       {profile.badges.map((badge, bidx) => (
-                        <span
+                        <motion.span
                           key={bidx}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: bidx * 0.1 }}
                           className="text-[9px] bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 font-black px-1.5 py-0.5 rounded border border-amber-100 dark:border-amber-900"
                         >
                           ⭐ {badge}
-                        </span>
+                        </motion.span>
                       ))}
                     </div>
                   ) : (
@@ -442,8 +478,8 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                 <p className="text-[10px] text-gray-400 dark:text-gray-300">
                   Official LifeSaver Milestones.
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* REAL-TIME EMERGENCY ALERTS GRID */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -751,8 +787,15 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                       No email packets sent to {profile.email} yet.
                     </p>
                   ) : (
-                    emailLogs.map((mail) => (
-                      <div key={mail.id} className="pt-3 first:pt-0">
+                    emailLogs.map((mail, idx) => (
+                      <motion.div
+                        key={mail.id}
+                        className="pt-3 first:pt-0 cursor-pointer group"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        onClick={() => setSelectedEmail(mail)}
+                      >
                         <div className="flex justify-between items-center mb-1 text-[10px] text-gray-400 dark:text-gray-350">
                           <span>
                             To: <strong>{mail.to}</strong>
@@ -761,13 +804,15 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                             {new Date(mail.timestamp).toLocaleTimeString()}
                           </span>
                         </div>
-                        <h5 className="text-xs font-black text-gray-900 dark:text-white">
+                        <h5 className="text-xs font-black text-gray-900 dark:text-white flex items-center gap-1.5">
                           Subject: {mail.subject}
+                          <ExternalLink size={10} className="text-red-400 opacity-0 group-hover:opacity-100 transition" />
                         </h5>
-                        <pre className="text-[10px] font-sans text-gray-500 dark:text-gray-300 whitespace-pre-line leading-relaxed bg-gray-50/60 dark:bg-gray-800/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700 mt-1">
+                        <div className="text-[10px] font-sans text-gray-500 dark:text-gray-300 whitespace-pre-line leading-relaxed bg-gray-50/60 dark:bg-gray-800/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700 mt-1 line-clamp-2 group-hover:border-red-200 dark:group-hover:border-red-800/40 transition">
                           {mail.body}
-                        </pre>
-                      </div>
+                        </div>
+                        <p className="text-[9px] text-red-500 dark:text-red-400 font-bold mt-1 opacity-0 group-hover:opacity-100 transition">Click to preview in email client →</p>
+                      </motion.div>
                     ))
                   )}
                 </div>
@@ -789,8 +834,15 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                       No SMS alerts pushed to {profile.phoneNumber} yet.
                     </p>
                   ) : (
-                    smsLogs.map((sms) => (
-                      <div key={sms.id} className="pt-3 first:pt-0">
+                    smsLogs.map((sms, idx) => (
+                      <motion.div
+                        key={sms.id}
+                        className="pt-3 first:pt-0 cursor-pointer group"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        onClick={() => setSelectedSms(sms)}
+                      >
                         <div className="flex justify-between items-center mb-1 text-[10px] text-gray-400 dark:text-gray-350">
                           <span>
                             Phone: <strong>{sms.to}</strong>
@@ -799,10 +851,12 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
                             {sms.status}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-650 dark:text-gray-300 font-mono bg-red-500/5 p-2 rounded-xl border border-red-500/10 leading-relaxed">
+                        <p className="text-xs text-gray-650 dark:text-gray-300 font-mono bg-red-500/5 p-2 rounded-xl border border-red-500/10 leading-relaxed line-clamp-2 group-hover:border-red-300 dark:group-hover:border-red-700/40 transition flex items-center gap-1.5">
+                          <MessageSquare size={10} className="text-red-400 shrink-0" />
                           {sms.body}
                         </p>
-                      </div>
+                        <p className="text-[9px] text-red-500 dark:text-red-400 font-bold mt-1 opacity-0 group-hover:opacity-100 transition">Click to preview in phone →</p>
+                      </motion.div>
                     ))
                   )}
                 </div>
@@ -932,6 +986,28 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger }) {
           bloodGroup={profile.bloodGroup}
         />
       )}
+
+      {/* Mock Email Client Preview Frame */}
+      <AnimatePresence>
+        {selectedEmail && (
+          <MockEmailFrame
+            isOpen={!!selectedEmail}
+            onClose={() => setSelectedEmail(null)}
+            email={selectedEmail}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mock Phone SMS Preview Frame */}
+      <AnimatePresence>
+        {selectedSms && (
+          <MockPhoneFrame
+            isOpen={!!selectedSms}
+            onClose={() => setSelectedSms(null)}
+            sms={selectedSms}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

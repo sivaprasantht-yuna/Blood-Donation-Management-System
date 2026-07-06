@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Heart,
   Landmark,
@@ -8,6 +9,8 @@ import {
   Bell,
   Check,
   Clock,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 export default function Navbar({
@@ -20,6 +23,8 @@ export default function Navbar({
   sseStatus,
   notifications,
   onMarkNotificationsRead,
+  theme,
+  onToggleTheme,
 }) {
   const [bellOpen, setBellOpen] = useState(false);
 
@@ -94,6 +99,39 @@ export default function Navbar({
 
         {/* Action Controls */}
         <nav className="flex items-center gap-2 sm:gap-3">
+          {/* Animated Sun/Moon Theme Toggle */}
+          <motion.button
+            id="theme-toggle-btn"
+            onClick={onToggleTheme}
+            className="relative p-2 text-gray-600 dark:text-gray-200 hover:text-amber-500 dark:hover:text-amber-400 bg-gray-50 dark:bg-gray-800 hover:bg-amber-50 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700 rounded-xl transition cursor-pointer"
+            title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+            whileTap={{ scale: 0.85, rotate: 180 }}
+            whileHover={{ scale: 1.1 }}
+          >
+            <AnimatePresence mode="wait">
+              {theme === "dark" ? (
+                <motion.div
+                  key="moon"
+                  initial={{ rotate: -90, scale: 0, opacity: 0 }}
+                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                  exit={{ rotate: 90, scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                  <Moon size={16} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="sun"
+                  initial={{ rotate: 90, scale: 0, opacity: 0 }}
+                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                  exit={{ rotate: -90, scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                  <Sun size={16} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
           {/* Genuine Notification Bell Dropdown */}
           {isAuthenticated && (
             <div className="relative">

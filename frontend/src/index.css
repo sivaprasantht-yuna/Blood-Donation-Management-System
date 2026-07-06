@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-cinzel: "Cinzel", serif;
   --font-playfair: "Playfair Display", serif;
@@ -16,3 +18,72 @@
   --color-gray-750: #2c3542;
   --color-gray-901: #0f131a;
 }
+
+/* Global Dark Mode Fallbacks & Styles */
+.dark body,
+.dark .bg-\[\#FAFAFA\] {
+  background-color: #111827 !important;
+  color: #f3f4f6 !important;
+}
+
+.dark .bg-white {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.dark .text-gray-900 {
+  color: #f3f4f6 !important;
+}
+
+.dark .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+.dark .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+.dark .border-gray-100 {
+  border-color: #374151 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+  border-color: #374151 !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: #ef4444 !important;
+}
+
+.dark input::placeholder {
+  color: #6b7280 !important;
+}
+
+.dark option {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.dark .hover\:text-gray-900:hover {
+  color: #ffffff !important;
+}
+
+

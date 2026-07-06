@@ -22,7 +22,10 @@
       ],
       "isAvailable": true,
       "createdAt": "2025-01-20T00:00:00.000Z",
-      "passwordHash": "donor123"
+      "passwordHash": "donor123",
+      "theme": "dark",
+      "emailEnabled": true,
+      "smsEnabled": true
     },
     {
       "id": "u_2",
@@ -354,24 +357,14 @@
   ],
   "notifications": [
     {
-      "id": "n_1",
-      "userId": "u_1",
-      "title": "Immediate Emergency Alert!",
-      "message": "City General Hospital in CHENNAI requires O+ blood. Your profile is a perfect match!",
-      "type": "emergency",
-      "read": false,
-      "requestId": "r_1",
-      "createdAt": "2026-06-09T06:30:00.000Z"
-    },
-    {
-      "id": "n_1780995721487_u_5",
-      "userId": "u_5",
-      "title": "URGENT: Medium Blood Match!",
-      "message": "City General Hospital requires 2 units of B+ blood for Patient reference PAT - 4596. Contact: 0442345678.",
-      "type": "emergency",
-      "read": false,
-      "requestId": "r_1780995721487",
-      "createdAt": "2026-06-09T09:02:01.487Z"
+      "id": "n_1780997025464_h",
+      "hospitalId": "h_1780995900322",
+      "title": "Donor Matched!",
+      "message": "siva (B+) has accepted your urgent emergency broadcast request!",
+      "type": "match",
+      "read": true,
+      "requestId": "r_1780996932446",
+      "createdAt": "2026-06-09T09:23:45.464Z"
     },
     {
       "id": "n_1780996932446_u_1780995426655",
@@ -384,14 +377,24 @@
       "createdAt": "2026-06-09T09:22:12.446Z"
     },
     {
-      "id": "n_1780997025464_h",
-      "hospitalId": "h_1780995900322",
-      "title": "Donor Matched!",
-      "message": "siva (B+) has accepted your urgent emergency broadcast request!",
-      "type": "match",
-      "read": false,
-      "requestId": "r_1780996932446",
-      "createdAt": "2026-06-09T09:23:45.464Z"
+      "id": "n_1780995721487_u_5",
+      "userId": "u_5",
+      "title": "URGENT: Medium Blood Match!",
+      "message": "City General Hospital requires 2 units of B+ blood for Patient reference PAT - 4596. Contact: 0442345678.",
+      "type": "emergency",
+      "read": true,
+      "requestId": "r_1780995721487",
+      "createdAt": "2026-06-09T09:02:01.487Z"
+    },
+    {
+      "id": "n_1",
+      "userId": "u_1",
+      "title": "Immediate Emergency Alert!",
+      "message": "City General Hospital in CHENNAI requires O+ blood. Your profile is a perfect match!",
+      "type": "emergency",
+      "read": true,
+      "requestId": "r_1",
+      "createdAt": "2026-06-09T06:30:00.000Z"
     }
   ],
   "camps": [
@@ -433,5 +436,8 @@
       "email": "admin@lifedrop.org",
       "passwordHash": "admin123"
     }
-  ]
+  ],
+  "activityLogs": [],
+  "emailLogs": [],
+  "smsLogs": []
 }
