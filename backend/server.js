@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 import mysql from "mysql2/promise";
 
@@ -41,6 +40,8 @@ const dbPort = parseInt(process.env.DB_PORT || "3306", 10);
 const dbUser = process.env.DB_USER || "root";
 const dbPassword = process.env.DB_PASSWORD || "";
 const dbName = process.env.DB_NAME || "lifedrop";
+const dbSslEnabled = process.env.DB_SSL === "true";
+const dbSslRejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false";
 
 let pool;
 
@@ -53,6 +54,12 @@ const initDB = async () => {
       port: dbPort,
       user: dbUser,
       password: dbPassword,
+      ssl: dbSslEnabled
+        ? {
+            minVersion: "TLSv1.2",
+            rejectUnauthorized: dbSslRejectUnauthorized,
+          }
+        : undefined,
     });
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
     await connection.end();
@@ -67,6 +74,12 @@ const initDB = async () => {
     user: dbUser,
     password: dbPassword,
     database: dbName,
+    ssl: dbSslEnabled
+      ? {
+          minVersion: "TLSv1.2",
+          rejectUnauthorized: dbSslRejectUnauthorized,
+        }
+      : undefined,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
@@ -1451,6 +1464,29 @@ app.delete("/api/admin/hospitals/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+const frontendDistCandidates = [
+  path.resolve(process.cwd(), "frontend", "dist"),
+  path.resolve(process.cwd(), "..", "frontend", "dist"),
+];
+
+const frontendDistPath = frontendDistCandidates.find((candidate) =>
+  fs.existsSync(path.join(candidate, "index.html"))
+);
+
+if (frontendDistPath) {
+  app.use(express.static(frontendDistPath));
+
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+
+    return res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+} else {
+  console.warn("Frontend build output not found. Non-API routes will not be served.");
+}
 
 // Start server immediately and initialize database in background
 app.listen(PORT, async () => {
