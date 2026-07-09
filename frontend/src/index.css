@@ -86,4 +86,16 @@
   color: #ffffff !important;
 }
 
+.dark {
+  color-scheme: dark;
+}
+
+/* Enforce spinner visibility and styling inside dark inputs */
+.dark input[type="number"]::-webkit-inner-spin-button,
+.dark input[type="number"]::-webkit-outer-spin-button {
+  background-color: #1e293b !important;
+  opacity: 1 !important;
+  cursor: pointer;
+}
+
 

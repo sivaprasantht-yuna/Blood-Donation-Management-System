@@ -142,7 +142,7 @@
       "licenseNumber": "CGH-7781-TN",
       "email": "citygeneral@hospital.com",
       "phone": "0442345678",
-      "address": "500 Poonamallee High Road",
+      "address": "500 Poonamallee High Road", 
       "city": "CHENNAI",
       "isApproved": true,
       "bloodInventory": {

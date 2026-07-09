@@ -136,6 +136,49 @@
       "isAvailable": true,
       "createdAt": "2026-06-09T08:57:06.655Z",
       "passwordHash": "123456"
+    },
+    {
+      "id": "u_1783352712343",
+      "fullName": "Ashwin.R.M",
+      "age": 20,
+      "gender": "Male",
+      "bloodGroup": "O+",
+      "phoneNumber": "8610462003",
+      "email": "ashwinrm2005@gmail.com",
+      "address": "No-733, Balaji Nagar, Chinna Elasegiri,Hosur - 635126",
+      "city": "HOSUR",
+      "state": "TamilNadu",
+      "lastDonationDate": "2005-10-01",
+      "totalDonations": 0,
+      "livesSaved": 0,
+      "requestsAccepted": 0,
+      "badges": [],
+      "isAvailable": true,
+      "createdAt": "2026-07-06T15:45:12.343Z",
+      "passwordHash": "ash@05",
+      "theme": "dark",
+      "emailEnabled": true,
+      "smsEnabled": true
+    },
+    {
+      "id": "u_1783498029695",
+      "fullName": "hu",
+      "age": 18,
+      "gender": "Male",
+      "bloodGroup": "O+",
+      "phoneNumber": "1448856959",
+      "email": "hu@gmail.com",
+      "address": "rt",
+      "city": "CHENNAI",
+      "state": "Tamil Nadu",
+      "lastDonationDate": "2026-07-09",
+      "totalDonations": 0,
+      "livesSaved": 0,
+      "requestsAccepted": 0,
+      "badges": [],
+      "isAvailable": true,
+      "createdAt": "2026-07-08T08:07:09.695Z",
+      "passwordHash": "123456"
     }
   ],
   "hospitals": [
@@ -248,6 +291,28 @@
       },
       "createdAt": "2026-06-09T09:12:44.265Z",
       "passwordHash": "123456"
+    },
+    {
+      "id": "h_1783352895927",
+      "hospitalName": "North-East Hospital",
+      "licenseNumber": "sqi32laj",
+      "email": "asdhwjdonan@gmail.com",
+      "phone": "544984321",
+      "address": "jiabdinca",
+      "city": "HOSUR",
+      "isApproved": true,
+      "bloodInventory": {
+        "A+": 0,
+        "A-": 0,
+        "B+": 0,
+        "B-": 0,
+        "AB+": 0,
+        "AB-": 0,
+        "O+": 0,
+        "O-": 0
+      },
+      "createdAt": "2026-07-06T15:48:15.927Z",
+      "passwordHash": "ash@05"
     }
   ],
   "bloodRequests": [
@@ -437,7 +502,65 @@
       "passwordHash": "admin123"
     }
   ],
-  "activityLogs": [],
-  "emailLogs": [],
+  "activityLogs": [
+    {
+      "id": "log_1783498029697_838",
+      "userId": "u_1783498029695",
+      "role": "donor",
+      "action": "REGISTERED",
+      "description": "hu registered as a new Compatible Donor (O+) in CHENNAI",
+      "timestamp": "2026-07-08T08:07:09.697Z"
+    },
+    {
+      "id": "log_1783352912503_381",
+      "userId": "h_1783352895927",
+      "role": "admin",
+      "action": "APPROVED",
+      "description": "Verified license credentials for North-East Hospital",
+      "timestamp": "2026-07-06T15:48:32.503Z"
+    },
+    {
+      "id": "log_1783352895928_497",
+      "userId": "h_1783352895927",
+      "role": "hospital",
+      "action": "REGISTERED",
+      "description": "North-East Hospital submitted licensing registration request from HOSUR",
+      "timestamp": "2026-07-06T15:48:15.928Z"
+    },
+    {
+      "id": "log_1783352712346_243",
+      "userId": "u_1783352712343",
+      "role": "donor",
+      "action": "REGISTERED",
+      "description": "Ashwin.R.M registered as a new Compatible Donor (O+) in HOSUR",
+      "timestamp": "2026-07-06T15:45:12.346Z"
+    }
+  ],
+  "emailLogs": [
+    {
+      "id": "mail_1783498029698_305",
+      "to": "hu@gmail.com",
+      "subject": "Welcome to LifeDrop Network!",
+      "body": "Dear hu,\n\nThank you for volunteering with LifeDrop. Your profile has been added to our network of active compatible donors in CHENNAI. You will receive immediate alerts whenever there's an emergency blood request matching O+ in your area!\n\nRegards,\nLifeDrop Team",
+      "timestamp": "2026-07-08T08:07:09.698Z",
+      "status": "SENT"
+    },
+    {
+      "id": "mail_1783352895929_982",
+      "to": "asdhwjdonan@gmail.com",
+      "subject": "LifeDrop Registration Verification Required",
+      "body": "Dear North-East Hospital Staff,\n\nWe have successfully received your licensing registration request (License: sqi32laj). Our admin board will review details within 24 hours to approve full database and broadcast privileges.\n\nBest Regards,\nLifeDrop Verification Team",
+      "timestamp": "2026-07-06T15:48:15.929Z",
+      "status": "SENT"
+    },
+    {
+      "id": "mail_1783352712348_951",
+      "to": "ashwinrm2005@gmail.com",
+      "subject": "Welcome to LifeDrop Network!",
+      "body": "Dear Ashwin.R.M,\n\nThank you for volunteering with LifeDrop. Your profile has been added to our network of active compatible donors in HOSUR. You will receive immediate alerts whenever there's an emergency blood request matching O+ in your area!\n\nRegards,\nLifeDrop Team",
+      "timestamp": "2026-07-06T15:45:12.348Z",
+      "status": "SENT"
+    }
+  ],
   "smsLogs": []
 }

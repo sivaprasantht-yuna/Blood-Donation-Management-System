@@ -4,7 +4,8 @@ import { Heart, Activity, Mail, Lock, AlertCircle } from "lucide-react";
 
 export default function LoginPage({
   onLoginSuccess,
-  onGoToRegister,
+  onGoToRegisterDonor,
+  onGoToRegisterHospital,
   onGoToHome,
 }) {
   const [email, setEmail] = useState("");
@@ -285,18 +286,29 @@ export default function LoginPage({
           </form>
 
           {/* Registration redirects */}
-          <div className="text-center pt-2">
+          <div className="text-center pt-2 space-y-2">
             <p className="text-xs text-gray-450 dark:text-gray-400">
-              Don't have an account?{" "}
+              Don't have an account?
+            </p>
+            <div className="flex justify-center items-center gap-3">
               <button
                 type="button"
-                id="login-go-register-btn"
-                onClick={onGoToRegister}
-                className="text-red-650 hover:text-red-700 font-bold hover:underline cursor-pointer"
+                id="login-go-register-donor-btn"
+                onClick={onGoToRegisterDonor}
+                className="text-red-650 hover:text-red-700 font-bold hover:underline cursor-pointer text-xs"
               >
-                Register as Donor or Hospital
+                Register as Donor
               </button>
-            </p>
+              <span className="text-gray-300 dark:text-gray-600">|</span>
+              <button
+                type="button"
+                id="login-go-register-hospital-btn"
+                onClick={onGoToRegisterHospital}
+                className="text-red-650 hover:text-red-700 font-bold hover:underline cursor-pointer text-xs"
+              >
+                Register as Hospital
+              </button>
+            </div>
           </div>
         </div>
       </div>

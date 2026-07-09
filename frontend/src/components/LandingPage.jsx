@@ -63,11 +63,11 @@ const fadeUpChild = {
     transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 };
-
 export default function LandingPage({
   stats,
   camps,
   onBecomeDonor,
+  onHospitalRegister,
   onHospitalPortal,
   onAddCamp,
   isAuthenticated,
@@ -98,7 +98,7 @@ export default function LandingPage({
                 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-901 tracking-tight leading-[1.1] text-center lg:text-left"
               >
                 Every Drop <br className="hidden lg:inline" />
-                <span className="text-red-600 bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+                <span className="text-red-650 bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                   Saves A Life
                 </span>
               </motion.h1>
@@ -123,16 +123,16 @@ export default function LandingPage({
                 <button
                   id="hero-become-donor-btn"
                   onClick={onBecomeDonor}
-                  className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-lg shadow-red-200 transition duration-300 flex items-center justify-center gap-2 transform active:scale-95 text-base w-full sm:w-auto"
+                  className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-lg shadow-red-200 dark:shadow-none transition duration-300 flex items-center justify-center gap-2 transform active:scale-95 text-base w-full sm:w-auto cursor-pointer"
                 >
                   Become a Donor <ArrowRight size={18} />
                 </button>
                 <button
-                  id="hero-hospital-portal-btn"
-                  onClick={onHospitalPortal}
-                  className="px-8 py-4 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 font-bold rounded-2xl shadow-sm transition duration-300 flex items-center justify-center gap-2 transform active:scale-95 text-base w-full sm:w-auto"
+                  id="hero-hospital-register-btn"
+                  onClick={onHospitalRegister}
+                  className="px-8 py-4 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 font-bold rounded-2xl shadow-sm transition duration-300 flex items-center justify-center gap-2 transform active:scale-95 text-base w-full sm:w-auto cursor-pointer dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white dark:border-gray-700"
                 >
-                  Hospital Portal
+                  Hospital Register
                 </button>
               </motion.div>
             </div>

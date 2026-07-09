@@ -292,12 +292,13 @@ export default function DashboardDonor({ donorId, onLogout, liveTrigger, theme }
                   ⭐ pre-screened VOLUNTEER
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-300">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-gray-500 dark:text-gray-300 mt-2">
                 <span className="flex items-center gap-1">
-                  <MapPin size={12} /> {profile.city}, {profile.state}
+                  <MapPin size={12} /> <strong>Address:</strong> {profile.address}, {profile.city}, {profile.state}
                 </span>
-                <span>• Group: {profile.bloodGroup}</span>
-                <span>• Contact number: {profile.phoneNumber}</span>
+                <span>• <strong>Phone:</strong> {profile.phoneNumber}</span>
+                <span>• <strong>Email:</strong> {profile.email}</span>
+                <span>• <strong>Group:</strong> {profile.bloodGroup}</span>
               </div>
             </div>
           </div>

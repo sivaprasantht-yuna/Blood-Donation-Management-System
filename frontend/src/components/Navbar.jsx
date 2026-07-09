@@ -245,10 +245,16 @@ export default function Navbar({
                 Home
               </button>
               <button
-                onClick={() => onChangeView("register")}
+                onClick={() => onChangeView("register-donor")}
                 className="px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-semibold rounded-xl text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer select-none"
               >
                 Become a Donor
+              </button>
+              <button
+                onClick={() => onChangeView("register-hospital")}
+                className="px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-semibold rounded-xl text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer select-none"
+              >
+                Hospital Register
               </button>
               <button
                 onClick={() => onChangeView("login")}

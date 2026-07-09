@@ -336,6 +336,12 @@ export default function DashboardAdmin({ onLogout, liveTrigger }) {
                             {hosp.email}
                           </span>
                         </p>
+                        <p className="flex justify-between">
+                          <span>Address:</span>
+                          <span className="font-semibold text-gray-700 dark:text-white text-right">
+                            {hosp.address}, {hosp.city}
+                          </span>
+                        </p>
                       </div>
 
                       <div className="flex gap-2 pt-2">
@@ -383,6 +389,12 @@ export default function DashboardAdmin({ onLogout, liveTrigger }) {
                         </h4>
                         <p className="text-[10px] text-gray-450 dark:text-gray-300 font-bold">
                           {hosp.city} sector • Code: {hosp.licenseNumber}
+                        </p>
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                          📞 {hosp.phone} | ✉️ {hosp.email}
+                        </p>
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                          📍 {hosp.address}, {hosp.city}
                         </p>
                       </div>
 
@@ -446,6 +458,12 @@ export default function DashboardAdmin({ onLogout, liveTrigger }) {
                           <p className="text-[10px] text-gray-450 dark:text-gray-300 font-semibold">
                             {donor.city} • Impact score: {donor.totalDonations}{" "}
                             units
+                          </p>
+                          <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                            📞 {donor.phoneNumber} | ✉️ {donor.email}
+                          </p>
+                          <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                            📍 {donor.address}, {donor.city}, {donor.state}
                           </p>
                         </div>
                       </div>

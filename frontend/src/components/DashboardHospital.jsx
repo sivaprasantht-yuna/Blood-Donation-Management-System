@@ -880,6 +880,16 @@ export default function DashboardHospital({
                                     {req.acceptedByDonorPhone}
                                   </a>
                                 )}
+                                {req.acceptedByDonorEmail && (
+                                  <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-1 block">
+                                    ✉️ {req.acceptedByDonorEmail}
+                                  </span>
+                                )}
+                                {req.acceptedByDonorAddress && (
+                                  <span className="text-[10px] text-gray-500 dark:text-gray-400 block whitespace-normal max-w-[200px]">
+                                    📍 {req.acceptedByDonorAddress}
+                                  </span>
+                                )}
                               </div>
                             ) : (
                               <span className="text-gray-300 dark:text-gray-500 font-medium">
@@ -1037,8 +1047,14 @@ export default function DashboardHospital({
                             <h4 className="font-extrabold text-gray-900 dark:text-white text-sm leading-tight">
                               {donor.fullName}
                             </h4>
-                            <p className="text-[10px] text-gray-400 font-semibold">
+                            <p className="text-[10px] text-gray-450 font-semibold">
                               {donor.city}, {donor.state}
+                            </p>
+                            <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                              📞 {donor.phoneNumber} | ✉️ {donor.email}
+                            </p>
+                            <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                              📍 {donor.address}, {donor.city}, {donor.state}
                             </p>
                           </div>
                         </div>

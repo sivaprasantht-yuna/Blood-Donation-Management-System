@@ -4,10 +4,52 @@ import { Heart, X } from "lucide-react";
 import Navbar from "./components/Navbar";
 import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/LoginPage";
-import RegisterPage from "./components/RegisterPage";
+import RegisterDonorPage from "./components/RegisterDonorPage";
+import RegisterHospitalPage from "./components/RegisterHospitalPage";
 import DashboardDonor from "./components/DashboardDonor";
 import DashboardHospital from "./components/DashboardHospital";
 import DashboardAdmin from "./components/DashboardAdmin";
+
+const hashToView = (hash) => {
+  switch (hash) {
+    case "#/login":
+      return "login";
+    case "#/register-donor":
+      return "register-donor";
+    case "#/register-hospital":
+      return "register-hospital";
+    case "#/dashboard-donor":
+      return "dashboard-donor";
+    case "#/dashboard-hospital":
+      return "dashboard-hospital";
+    case "#/dashboard-admin":
+      return "dashboard-admin";
+    case "#/":
+    case "":
+    default:
+      return "home";
+  }
+};
+
+const viewToHash = (view) => {
+  switch (view) {
+    case "login":
+      return "#/login";
+    case "register-donor":
+      return "#/register-donor";
+    case "register-hospital":
+      return "#/register-hospital";
+    case "dashboard-donor":
+      return "#/dashboard-donor";
+    case "dashboard-hospital":
+      return "#/dashboard-hospital";
+    case "dashboard-admin":
+      return "#/dashboard-admin";
+    case "home":
+    default:
+      return "#/";
+  }
+};
 
 export default function App() {
   // Session States
@@ -140,15 +182,6 @@ export default function App() {
         setTheme(parsedAccount.theme);
         localStorage.setItem("ld_theme", parsedAccount.theme);
       }
-      if (savedView) {
-        setCurrentView(savedView);
-      } else {
-        // Redirection based on roles
-        if (savedUserType === "donor") setCurrentView("dashboard-donor");
-        else if (savedUserType === "hospital")
-          setCurrentView("dashboard-hospital");
-        else if (savedUserType === "admin") setCurrentView("dashboard-admin");
-      }
     }
     fetchGlobalData();
   }, []);
@@ -164,6 +197,64 @@ export default function App() {
       console.error("Failed to load global landing metadata", e);
     }
   };
+
+  // Sync state and check auth guards on URL Hash Changes
+  useEffect(() => {
+    const handleHashChange = () => {
+      const targetView = hashToView(window.location.hash);
+      const savedToken = localStorage.getItem("ld_token");
+      const savedUserType = localStorage.getItem("ld_userType");
+
+      if (targetView.startsWith("dashboard")) {
+        // Unauthenticated access attempt
+        if (!savedToken) {
+          window.location.hash = "#/login";
+          return;
+        }
+        // Incorrect role dashboard access attempt
+        if (targetView === "dashboard-donor" && savedUserType !== "donor") {
+          window.location.hash = `#/dashboard-${savedUserType}`;
+          return;
+        }
+        if (targetView === "dashboard-hospital" && savedUserType !== "hospital") {
+          window.location.hash = `#/dashboard-${savedUserType}`;
+          return;
+        }
+        if (targetView === "dashboard-admin" && savedUserType !== "admin") {
+          window.location.hash = `#/dashboard-${savedUserType}`;
+          return;
+        }
+      } else if (targetView === "login" || targetView.startsWith("register")) {
+        // Already authenticated users shouldn't access login/register
+        if (savedToken && savedUserType) {
+          window.location.hash = `#/dashboard-${savedUserType}`;
+          return;
+        }
+      }
+
+      setCurrentView(targetView);
+      localStorage.setItem("ld_view", targetView);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    // Initial page load hash sync
+    if (!window.location.hash) {
+      const savedToken = localStorage.getItem("ld_token");
+      const savedUserType = localStorage.getItem("ld_userType");
+      if (savedToken && savedUserType) {
+        window.location.hash = `#/dashboard-${savedUserType}`;
+      } else {
+        window.location.hash = "#/";
+      }
+    } else {
+      handleHashChange();
+    }
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
 
   // Real-Time Server Sent Events Stream Listener
   useEffect(() => {
@@ -261,8 +352,7 @@ export default function App() {
     else if (typeOfUser === "hospital") nextView = "dashboard-hospital";
     else if (typeOfUser === "admin") nextView = "dashboard-admin";
 
-    setCurrentView(nextView);
-    localStorage.setItem("ld_view", nextView);
+    window.location.hash = viewToHash(nextView);
     fetchGlobalData();
   };
 
@@ -274,12 +364,13 @@ export default function App() {
     setToken(null);
     setUserType(null);
     setAccount(null);
-    setCurrentView("home");
 
     localStorage.removeItem("ld_token");
     localStorage.removeItem("ld_userType");
     localStorage.removeItem("ld_account");
     localStorage.removeItem("ld_view");
+
+    window.location.hash = "#/";
   };
 
   const handleAddCamp = async (newCampData) => {
@@ -300,8 +391,7 @@ export default function App() {
   };
 
   const setViewWithLocal = (viewName) => {
-    setCurrentView(viewName);
-    localStorage.setItem("ld_view", viewName);
+    window.location.hash = viewToHash(viewName);
   };
 
   return (
@@ -392,12 +482,8 @@ export default function App() {
               <LandingPage
                 stats={stats}
                 camps={camps}
-                onBecomeDonor={() => setViewWithLocal("register")}
-                onHospitalPortal={() => {
-                  if (token && userType === "hospital")
-                    setViewWithLocal("dashboard-hospital");
-                  else setViewWithLocal("login");
-                }}
+                onBecomeDonor={() => setViewWithLocal("register-donor")}
+                onHospitalRegister={() => setViewWithLocal("register-hospital")}
                 onAddCamp={handleAddCamp}
                 isAuthenticated={token !== null}
                 userType={userType}
@@ -414,21 +500,36 @@ export default function App() {
             >
               <LoginPage
                 onLoginSuccess={handleLoginSuccess}
-                onGoToRegister={() => setViewWithLocal("register")}
+                onGoToRegisterDonor={() => setViewWithLocal("register-donor")}
+                onGoToRegisterHospital={() => setViewWithLocal("register-hospital")}
                 onGoToHome={() => setViewWithLocal("home")}
               />
             </motion.div>
           )}
 
-          {currentView === "register" && (
+          {currentView === "register-donor" && (
             <motion.div
-              key="register"
+              key="register-donor"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
-              <RegisterPage
+              <RegisterDonorPage
                 onRegisterDonorSuccess={handleRegisterDonorSuccess}
+                onGoToLogin={() => setViewWithLocal("login")}
+                onGoToHome={() => setViewWithLocal("home")}
+              />
+            </motion.div>
+          )}
+
+          {currentView === "register-hospital" && (
+            <motion.div
+              key="register-hospital"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <RegisterHospitalPage
                 onRegisterHospitalSuccess={() => {
                   setLivePopup({
                     id: `reg_${Date.now()}`,
