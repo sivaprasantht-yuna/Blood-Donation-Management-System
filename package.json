@@ -8,7 +8,6 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
     "build": "npm --prefix frontend run build && npm --prefix backend run build",
-    "prestart": "npm run build",
     "start": "npm --prefix backend run start",
     "start:dev": "npm run dev",
     "clean": "rm -rf dist backend/dist",
